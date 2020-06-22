@@ -1,3 +1,8 @@
+# STEP Starter Projects (zrideaux)
+
+This repo contains my portfolio and STEP projects.
+
+```md
 # Google Student Training in Engineering Program
 
 This repo contains the projects you'll work on for the first half of STEP.
@@ -11,3 +16,4 @@ To get started:
   - If the tutorial panel does not open or display the walkthrough contents, try refreshing the page.
 
 Then follow the on-screen instructions to set up your repo.
+```
