@@ -12,7 +12,7 @@
         <span id="initial-z">Z</span>
         <span id="initial-r">R</span>
       </div>
-      <button class="tab-button open" onclick="openTab(event, 'about')">About</button>
+      <button id="default-tab" class="tab-button open" onclick="openTab(event, 'about')" >About</button>
       <button class="tab-button" onclick="openTab(event, 'work')">Work</button>
     </div>
 
@@ -29,8 +29,12 @@
 
       <div id="work" class="tab-content">
         <h1>My Work</h1>
-        <p>Test</p>
+        <h2>Programming</h2>
+        <h3>Porfolio Site</h3>
+        <p>Using a combination of several technologies I am creating an interactive portfolio site as one portion of my STEP starter projects as a Google intern.
       </div>
+
+      <script>defaultTab();</script>
     </div>
   </body>
 </html>
