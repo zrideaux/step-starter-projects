@@ -1,3 +1,50 @@
+body {
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 0;
+  padding: 0;
+}
+
+#sidebar {
+  background-color: #212121;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#initials {
+  background-color: #212121;
+  height: 50px;
+  text-align: center;
+  width: 50px;
+}
+
+#initial-z {
+  color: #FFFFFF;
+}
+
+#initial-r {
+  color: rgb(238, 37, 121);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-button {
+  background-color: rgb(238, 37, 121);
+  color: #FFFFFF;
+  height: 50px;
+  text-align: center;
+  width: 50px;
+}
+
+.open {
+    background-color: #FFFFFF;
+    color: #000000;
+    display: inline;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;

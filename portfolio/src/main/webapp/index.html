@@ -7,12 +7,30 @@
     <script src="script.js"></script>
   </head>
   <body>
+    <div id="sidebar">
+      <div id="initials">
+        <span id="initial-z">Z</span>
+        <span id="initial-r">R</span>
+      </div>
+      <button class="tab-button open" onclick="openTab(event, 'about')">About</button>
+      <button class="tab-button" onclick="openTab(event, 'work')">Work</button>
+    </div>
+
     <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+      <div id="about" class="tab-content">
+        <h1>About</h1>
+        <p>This is my portfolio.</p>
+        <p>I am a rising sophomore at UC Irvine who is currently serving as a STEP Intern at Google! =)</p>
+        <img src="/images/cat.png">
+        <p>Click here to get a random message:</p>
+        <button onclick="addRandomGreeting()">Hello</button>
+        <div id="greeting-container"></div>
+      </div>
+
+      <div id="work" class="tab-content">
+        <h1>My Work</h1>
+        <p>Test</p>
+      </div>
     </div>
   </body>
 </html>
