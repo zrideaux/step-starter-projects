@@ -28,7 +28,8 @@ function addRandomGreeting() {
 }
 
 /**
- * 
+ * Displays relevant content for whichever tab button is clicked. Hides all
+ * other content. 
  */
 function openTab(event, tabName) {
     var tabContent, tabButton;
