@@ -1,3 +1,40 @@
+body {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+#sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+#initials {
+  background-color: #212121;
+  height: 50px;
+  text-align: center;
+  width: 50px;
+}
+
+#initial-z {
+  color: #FFFFFF;
+}
+
+#initial-r {
+  color: rgb(238, 37, 121);
+}
+
+#tabs {
+
+}
+
+.tab-button {
+  background-color: rgb(238, 37, 121);
+  color: #FFFFFF;
+  height: 50px;
+  text-align: center;
+  width: 50px;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
