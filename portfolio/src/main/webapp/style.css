@@ -24,7 +24,7 @@ body {
 }
 
 #initial-r {
-  color: rgb(238, 37, 121);
+  color: #ee2579;
 }
 
 .tab-content {
@@ -32,7 +32,7 @@ body {
 }
 
 .tab-button {
-  background-color: rgb(238, 37, 121);
+  background-color: #ee2579;
   color: #FFFFFF;
   height: 50px;
   text-align: center;

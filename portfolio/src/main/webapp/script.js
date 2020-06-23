@@ -49,6 +49,12 @@ function openTab(event, tabName) {
     // Add the open class to the clicked tab
     buttonClicked = document.getElementById(tabName);
     buttonClicked.style.display = 'inline';
-    event.currentTarget.className += ' open';
-    
+    event.currentTarget.className += ' open';   
+}
+
+/**
+ * Display specified tab when called.
+ */
+function defaultTab() {
+    document.getElementById('default-tab').click();
 }
