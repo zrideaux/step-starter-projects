@@ -26,3 +26,28 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+/**
+ * 
+ */
+function openTab(event, tabName) {
+    var tabContent, tabButton;
+
+    // Hide all the content by default
+    tabContent = document.getElementsByClassName('tab-content');
+    for (var i=0; i < tabContent.length; i++) {
+        tabContent[i].style.display = 'none';
+    }
+
+    // Remove the open class from each tab when one is clicked
+    tabButton = document.getElementsByClassName('tab-button');
+    for (var i=0; i < tabContent.length; i++) {
+        tabButton[i].className = tabButton[i].className.replace(' open', '');
+    }
+    
+    // Add the open class to the clicked tab
+    buttonClicked = document.getElementById(tabName);
+    buttonClicked.style.display = 'inline';
+    event.currentTarget.className += ' open';
+    
+}
