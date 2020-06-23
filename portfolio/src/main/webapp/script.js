@@ -47,9 +47,7 @@ function openTab(event, tabName) {
     }
     
     // Add the open class to the clicked tab
-    console.log('tabName', tabName);
     buttonClicked = document.getElementById(tabName);
-    console.log('buttonClicked', buttonClicked);
     buttonClicked.style.display = 'inline';
     event.currentTarget.className += ' open';   
 }
