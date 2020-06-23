@@ -3,6 +3,29 @@ body {
   flex-flow: row nowrap;
   margin: 0;
   padding: 0;
+  font-family: sans-serif;
+}
+
+h1 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+}
+
+h2 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+}
+
+h3 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+hr {
+  background-color: #212121;
+  border-width: 0px;
+  color: #212121;
+  height: 1px;
 }
 
 #sidebar {
@@ -13,9 +36,14 @@ body {
 }
 
 #initials {
+  align-items: center;
   background-color: #212121;
+  display: flex;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  font-size: 18pt;
   height: 50px;
-  text-align: center;
+  justify-content: center;
   width: 50px;
 }
 
@@ -28,11 +56,12 @@ body {
 }
 
 .tab-content {
-    display: none;
+  display: none;
 }
 
 .tab-button {
   background-color: #ee2579;
+  border: none;
   color: #FFFFFF;
   height: 50px;
   text-align: center;
@@ -40,9 +69,9 @@ body {
 }
 
 .open {
-    background-color: #FFFFFF;
-    color: #000000;
-    display: inline;
+  background-color: #FFFFFF;
+  color: #000000;
+  display: inline;
 }
 
 #content {
@@ -53,4 +82,25 @@ body {
 
 #greeting-container {
   margin-top: 20px;
+}
+
+.tool {
+  border-radius: 3px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10pt;
+  padding: 2px 5px 2px 5px;
+}
+.html-tag {
+  background-color: #e34f26;
+  color: #FFFFFF;
+}
+
+.css-tag {
+  background-color: #563d7c;
+  color: #FFFFFF;
+}
+
+.javascript-tag {
+  background-color: #f7df1e;
+  color: #000000;
 }
