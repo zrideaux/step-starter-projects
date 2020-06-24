@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Roboto+Mono&family=Roboto:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <script src="script.js"></script>
   </head>
   <body>
@@ -13,12 +14,19 @@
         <span id="initial-r">R</span>
       </div>
       <button id="default-tab" class="tab-button open" onclick="openTab(event, 'about')">About</button>
-      <button class="tab-button" onclick="openTab(event, 'work')">Work</button>
+      <button class="tab-button" onclick="openTab(event, 'projects')">Projects</button>
+      <button class="tab-button" onclick="openTab(event, 'experience')">Experience</button>
+      <div id="media-links">
+        <a href="https://github.com/zrideaux"><img src="/images/GitHub-Mark-Light-120px.png" alt="GitHub"></a>
+        <a href="#"><img src="/images/LI-In-Bug.png" alt="LinkedIn"></a>
+
+      </div>
     </div>
 
     <div id="content">
       <div id="about" class="tab-content">
         <h1>About</h1>
+        <hr>
         <p>This is my portfolio.</p>
         <p>I am a rising sophomore at UC Irvine who is currently serving as a STEP Intern at Google! =)</p>
         <img src="/images/cat.png">
@@ -27,12 +35,25 @@
         <div id="greeting-container"></div>
       </div>
 
-      <div id="work" class="tab-content">
-        <h1>My Work</h1>
+      <div id="projects" class="tab-content">
+        <h1>My Projects</h1>
+        <hr>
         <h2>Programming</h2>
-        <h3>Porfolio Site</h3>
+        <h3>
+          Porfolio Site
+          <span class="tool html-tag">html</span>
+          <span class="tool css-tag">css</span>
+          <span class="tool javascript-tag">javascript</span>
+        </h3>
         <p>Using a combination of several technologies I am creating an interactive portfolio site as one of my Google STEP Intern starter projects.
       </div>
+
+      <div id="experience" class="tab-content">
+        <h1>Experience</h1>
+        <hr>
+        <h3>Google STEP Intern</h3>
+        <span class="subtitle">&#62; 15 Jun 2020 - Present</span>
+        <p>I am currently serving as a STEP Intern at Google!</p>
 
       <script>defaultTab();</script>
     </div>

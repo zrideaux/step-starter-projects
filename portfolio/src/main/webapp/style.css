@@ -3,6 +3,30 @@ body {
   flex-flow: row nowrap;
   margin: 0;
   padding: 0;
+  font-family: sans-serif;
+}
+
+h1 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+}
+
+h2 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+}
+
+h3 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+
+hr {
+  background-color: #212121;
+  border-width: 0px;
+  color: #212121;
+  height: 1px;
 }
 
 #sidebar {
@@ -13,10 +37,15 @@ body {
 }
 
 #initials {
+  align-items: center;
   background-color: #212121;
-  height: 50px;
-  text-align: center;
-  width: 50px;
+  display: flex;
+  font-family: "Montserrat", sans-serif;
+  font-size: 22pt;
+  font-weight: 900;
+  height: 70px;
+  justify-content: center;
+  width: 100px;
 }
 
 #initial-z {
@@ -28,21 +57,36 @@ body {
 }
 
 .tab-content {
-    display: none;
+  display: none;
 }
 
 .tab-button {
   background-color: #ee2579;
+  border: none;
+  border-top: 1px solid #8a1545;
   color: #FFFFFF;
-  height: 50px;
+  font-size: 12pt;
+  height: 70px;
   text-align: center;
-  width: 50px;
+  width: 100px;
 }
 
 .open {
-    background-color: #FFFFFF;
-    color: #000000;
-    display: inline;
+  background-color: #FFFFFF;
+  color: #000000;
+  display: inline;
+}
+
+#media-links {
+    align-items: center;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 10px;
+}
+
+#media-links img {
+    margin-top: 10px;
+    width: 40px;
 }
 
 #content {
@@ -53,4 +97,31 @@ body {
 
 #greeting-container {
   margin-top: 20px;
+}
+
+.subtitle {
+  color: #828282;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10pt;
+}
+
+.tool {
+  border-radius: 3px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10pt;
+  padding: 2px 5px 2px 5px;
+}
+.html-tag {
+  background-color: #e34f26;
+  color: #FFFFFF;
+}
+
+.css-tag {
+  background-color: #563d7c;
+  color: #FFFFFF;
+}
+
+.javascript-tag {
+  background-color: #f7df1e;
+  color: #000000;
 }
