@@ -41,8 +41,8 @@ hr {
   background-color: #212121;
   display: flex;
   font-family: "Montserrat", sans-serif;
-  font-weight: 900;
   font-size: 22pt;
+  font-weight: 900;
   height: 70px;
   justify-content: center;
   width: 100px;
@@ -98,7 +98,6 @@ hr {
 #greeting-container {
   margin-top: 20px;
 }
-
 
 .subtitle {
   color: #828282;
