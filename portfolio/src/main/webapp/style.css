@@ -114,9 +114,12 @@ hr {
 }
 
 #content {
+  height: 100vh;
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  overflow-y: scroll;
+  padding: 0 10px 0 10px;
+  width: 850px;
 }
 
 #greeting-container {
