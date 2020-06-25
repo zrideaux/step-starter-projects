@@ -141,6 +141,7 @@ hr {
   font-family: 'Roboto Mono', monospace;
   font-size: 10pt;
   padding: 2px 5px 2px 5px;
+  white-space: nowrap;
 }
 .html-tag {
   background-color: #e34f26;
