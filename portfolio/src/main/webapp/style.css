@@ -21,6 +21,18 @@ h3 {
   font-weight: 700;
 }
 
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  background-color: #F5F5F5;
+  border-left: 3px solid #ee2579;
+  margin-bottom: 10px;
+  padding: 5px 5px 5px 10px;
+}
 
 hr {
   background-color: #212121;
@@ -67,8 +79,16 @@ hr {
   color: #FFFFFF;
   font-size: 12pt;
   height: 70px;
+  outline-color: #ee2579;
   text-align: center;
+  transition-duration: 0.35s;
   width: 100px;
+}
+
+.tab-button:focus,
+.tab-button:hover {
+  background-color: #8a1545;
+  color: #FFFFFF;
 }
 
 .open {
@@ -78,21 +98,28 @@ hr {
 }
 
 #media-links {
-    align-items: center;
-    display: flex;
-    flex-flow: column nowrap;
-    padding: 10px;
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 10px;
+}
+
+#media-links a {
+  outline-color: #ee2579;
 }
 
 #media-links img {
-    margin-top: 10px;
-    width: 40px;
+  padding-top: 10px;
+  width: 40px;
 }
 
 #content {
+  height: 100vh;
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  overflow-y: scroll;
+  padding: 0 10px 0 10px;
+  width: 850px;
 }
 
 #greeting-container {
@@ -124,4 +151,14 @@ hr {
 .javascript-tag {
   background-color: #f7df1e;
   color: #000000;
+}
+
+.python-tag {
+  background-color: #4b8bbe;
+  color: #FFFFFF;
+}
+
+.appengine-tag {
+  background-color: #4285f4;
+  color: #FFFFFF;
 }
