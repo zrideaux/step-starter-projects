@@ -167,3 +167,23 @@ hr {
   background-color: #4285f4;
   color: #FFFFFF;
 }
+
+.premierepro-tag {
+    background-color: #e083fc;
+    color: #FFFFFF;
+}
+
+.photoshop-tag {
+    background-color: #31a8ff;
+    color: #FFFFFF;
+}
+
+.aftereffects-tag {
+    background-color: #d1a2ff;
+    color: #000000;
+}
+
+.illustrator-tag {
+    background-color: #ff9a00;
+    color: #FFFFFF;
+}
