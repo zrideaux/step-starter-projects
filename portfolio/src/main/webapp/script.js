@@ -31,15 +31,18 @@ function openTab(event, tabName) {
         tabButton[i].className = tabButton[i].className.replace(' open', '');
     }
     
-    // Add the open class to the clicked tab
+    // Open the clicked tab (don't add class to default tab)
     buttonClicked = document.getElementById(tabName);
     buttonClicked.style.display = 'inline';
-    event.currentTarget.className += ' open';   
+    if (event !== undefined) {
+        event.currentTarget.className += ' open';   
+    }
 }
 
 /**
  * Display a specified default tab when called.
  */
 function defaultTab() {
-    document.getElementById('default-tab').click();
+    document.getElementById('default-tab').className += ' open';
+    openTab(event, 'about');
 }
