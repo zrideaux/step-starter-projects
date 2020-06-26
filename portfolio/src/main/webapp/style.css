@@ -1,6 +1,11 @@
+html {
+    height: 100%;
+}
+
 body {
   display: flex;
   flex-flow: row nowrap;
+  height: 100%;
   margin: 0;
   padding: 0;
   font-family: sans-serif;
@@ -45,7 +50,6 @@ hr {
   background-color: #212121;
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 
 #initials {
@@ -114,12 +118,18 @@ hr {
 }
 
 #content {
-  height: 100vh;
+  height: 100%;
   margin-left: auto;
   margin-right: auto;
   overflow-y: scroll;
   padding: 0 10px 0 10px;
   width: 850px;
+}
+
+@media only screen and (min-width: 1536px) {
+  #content {
+    min-width: 55%;
+  }
 }
 
 #greeting-container {
@@ -137,7 +147,9 @@ hr {
   font-family: 'Roboto Mono', monospace;
   font-size: 10pt;
   padding: 2px 5px 2px 5px;
+  white-space: nowrap;
 }
+
 .html-tag {
   background-color: #e34f26;
   color: #FFFFFF;
@@ -160,5 +172,25 @@ hr {
 
 .appengine-tag {
   background-color: #4285f4;
+  color: #FFFFFF;
+}
+
+.premierepro-tag {
+  background-color: #e083fc;
+  color: #000000;
+}
+
+.photoshop-tag {
+  background-color: #31a8ff;
+  color: #FFFFFF;
+}
+
+.aftereffects-tag {
+  background-color: #d1a2ff;
+  color: #000000;
+}
+
+.illustrator-tag {
+  background-color: #ff9a00;
   color: #FFFFFF;
 }
