@@ -1,14 +1,16 @@
 html {
     height: 100%;
+    width: 100%;
 }
 
 body {
   display: flex;
   flex-flow: row nowrap;
+  font-family: sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  width: 100%
 }
 
 h1 {
@@ -50,6 +52,12 @@ hr {
   background-color: #212121;
   display: flex;
   flex-direction: column;
+}
+
+#buttons {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100px;
 }
 
 #initials {
@@ -193,4 +201,40 @@ hr {
 .illustrator-tag {
   background-color: #ff9a00;
   color: #FFFFFF;
+}
+
+/* Portrait View Styles */
+@media only screen and (orientation: portrait) {
+    body {
+        flex-flow: column nowrap;
+    }
+
+    #sidebar {
+        flex-flow: column wrap;
+    }
+
+    #initials {
+        height: 50px;
+        width: 100%;
+    }
+
+    #buttons {
+        flex-flow: row nowrap;
+        width: 100%;
+    }
+    
+    .tab-button {
+        height: 40px;
+        width: 33.33%;
+    }
+
+    #media-links {
+        display: none;
+    }
+
+    #content {
+        overflow-y: scroll;
+        padding: 0;
+        width: 95%;
+    }
 }
