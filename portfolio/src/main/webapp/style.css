@@ -54,7 +54,7 @@ hr {
   flex-direction: column;
 }
 
-#buttons {
+#sidebar-buttons {
     display: flex;
     flex-flow: column nowrap;
     width: 100px;
@@ -218,7 +218,7 @@ hr {
         width: 100%;
     }
 
-    #buttons {
+    #sidebar-buttons {
         flex-flow: row nowrap;
         width: 100%;
     }
