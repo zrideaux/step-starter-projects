@@ -56,7 +56,17 @@ function getMessageFromServlet() {
         console.log(commentsArray);
         for (var i= commentsArray.length - 1; i >= 0; i--) {
             newComment = document.createElement("li");
-            newComment.innerText = commentsArray[i].user + ": " + commentsArray[i].comment;
+            
+            commentUser = document.createElement("p");
+            commentUser.className = "comment-username";
+            commentUser.innerText = commentsArray[i].user;
+            commentText = document.createElement("p");
+            commentText.className = "comment-text";
+            commentText.innerText = commentsArray[i].comment;
+            
+            newComment.appendChild(commentUser);
+            newComment.appendChild(commentText);
+            
             commentSection.appendChild(newComment);
         }
     });

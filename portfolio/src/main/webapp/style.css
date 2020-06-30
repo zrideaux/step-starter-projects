@@ -134,6 +134,17 @@ hr {
   width: 850px;
 }
 
+.comment-username {
+  font-family: "Montserrat", sans-serif;
+}
+
+.comment-text {
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
 @media only screen and (min-width: 1536px) {
   #content {
     min-width: 55%;
