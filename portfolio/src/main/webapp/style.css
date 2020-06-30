@@ -6,7 +6,7 @@ html {
 body {
   display: flex;
   flex-flow: row nowrap;
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
