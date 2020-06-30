@@ -46,3 +46,18 @@ function defaultTab() {
     document.getElementById('default-tab').className += ' open';
     openTab(event, 'about');
 }
+
+/**
+ * Get a message from the servlet.
+ */
+function getMessageFromServlet() {
+    fetch('/data').then(response => response.json()).then(myObject => {
+        console.log(myObject);
+        list = document.getElementById('json-messages');
+        for (message in myObject) {
+            listItem = document.createElement("li");
+            listItem.innerText = myObject[message];
+            list.appendChild(listItem);
+        }
+    });
+}
