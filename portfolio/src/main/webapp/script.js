@@ -66,7 +66,7 @@ function getCommentsFromServlet() {
         console.log(commentsArray);
         
         // Fill comment section based on selection
-        for (var i= commentsArray.length - 1; i >= 0; i--) {
+        for (var i = 0; i < commentsArray.length; i++) {
             newComment = document.createElement("li");
             
             commentUser = document.createElement("span");
