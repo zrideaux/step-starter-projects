@@ -100,3 +100,15 @@ function getCommentsFromServlet() {
         }
     });
 }
+
+/**
+ * Delete all comments in datastore when called.
+ */
+function deleteAllComments() {
+    fetch('/delete-data', {method: "POST"}).then(response => response.text()).then(text => {
+        // Clear comment section
+        commentSection = document.getElementById('comment-section');
+        commentSection.innerHTML = '';
+        console.log(text);
+    });
+}

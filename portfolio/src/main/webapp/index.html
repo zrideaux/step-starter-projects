@@ -118,15 +118,18 @@
           <input type="submit"></input>
         </form>
         <hr>
-        <form>
-          <label>Comments Displayed:</label>
-          <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5">
+        <div id="comment-actions">
+          <form>
+            <label>Comments Displayed:</label>
+            <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5">
               <option value="5" selected="selected">5 Comments</option>
               <option value="10">10 Comments</option>
               <option value="20">20 Comments</option>
               <option value="-1">All Comments</option>
-          </select>
-        </form>
+            </select>
+          </form>
+          <button action="POST" onclick="deleteAllComments();">Delete All Comments</button>
+        </div>
         <ul id="comment-section"></ul>
       </div>
     <script>reopenTab(); defaultTab();</script>   
