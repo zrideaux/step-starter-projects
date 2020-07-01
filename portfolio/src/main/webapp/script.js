@@ -48,23 +48,35 @@ function defaultTab() {
 }
 
 /**
+ * Open a specified tab when called.
+function openTab(tabName) {
+    document.getElementById('default-tab').className += ' open';
+    openTab(event, 'about');
+}
+
+/**
  * Get comments from the servlet and display them on the page.
  */
 function getMessageFromServlet() {
-    fetch('/data').then(response => response.json()).then(commentsArray => {
+    fetch('/data?comments=0').then(response => response.json()).then(commentsArray => {
         commentSection = document.getElementById('comment-section');
         console.log(commentsArray);
         for (var i= commentsArray.length - 1; i >= 0; i--) {
             newComment = document.createElement("li");
             
-            commentUser = document.createElement("p");
+            commentUser = document.createElement("span");
             commentUser.className = "comment-username";
             commentUser.innerText = commentsArray[i].user;
             commentText = document.createElement("p");
             commentText.className = "comment-text";
             commentText.innerText = commentsArray[i].comment;
+            deleteLink = document.createElement("a");
+            deleteLink.className = "comment-delete";
+            deleteLink.innerText = "Delete";
+            deleteLink.setAttribute("href", "#");
             
             newComment.appendChild(commentUser);
+            newComment.appendChild(deleteLink);
             newComment.appendChild(commentText);
             
             commentSection.appendChild(newComment);

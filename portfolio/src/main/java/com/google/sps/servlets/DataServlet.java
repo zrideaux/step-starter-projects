@@ -54,9 +54,16 @@ public class DataServlet extends HttpServlet {
       allComments.add(comment);
     }
 
+    // Limit the number of comments shown.
+    int numberOfCommentsShown = Integer.parseInt(getParameter(request, "comments", "5"));
+    ArrayList<HashMap> shownComments = new ArrayList<HashMap>();
+    for (int i=0; i < numberOfCommentsShown  && i < allComments.size(); i++) {
+      shownComments.add(allComments.get(i));
+    }
+
     // Convert comment data to Json
     Gson gson = new Gson();
-    commentsJson = gson.toJson(allComments);
+    commentsJson = gson.toJson(shownComments);
     System.out.println(commentsJson);
     
     response.setContentType("application/json");
