@@ -48,6 +48,7 @@
           <span class="tool css-tag">css</span>
           <span class="tool javascript-tag">javascript</span>
           <span class="tool appengine-tag">app engine</span>
+          <span class="tool java-tag">java</span>
         </h3>
         <span class="subtitle">&#62; 15 Jun 2020 - Present</span>
         <p>I am currently serving as a STEP Intern at Google!</p>
@@ -109,14 +110,17 @@
         <p>You can leave a comment here!</p> 
         <form action="/data" method="POST">
           <label>Name</label>
-          <br>
           <input type="text" name="username" placeholder="ex. Ada Lovelace"></input>
           <br>
           <label>Comment</label>
-          <br>
           <input type="text" name="comment" placeholder="ex. Good work!"></input>
           <br>
           <input type="submit"></input>
+        </form>
+        <hr>
+        <form action="/data">
+          <label>Show How Many Comments?</label>
+          <input name="show" type="number" onchange="this.form.submit()" placeholder="ex. 5"></input>
         </form>
         <ul id="comment-section"></ul>
       </div>
