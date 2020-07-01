@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,35 +32,56 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  ArrayList<HashMap> allComments = new ArrayList<HashMap>();
-  Gson gson = new Gson();
   String commentsJson = new String();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    ArrayList<HashMap> allComments = new ArrayList<HashMap>();
+    
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+    
+    for (Entity entity : results.asIterable()) {
+      // Retrieve comment
+      long id = entity.getKey().getId();
+      String username = (String) entity.getProperty("user");
+      String text = (String) entity.getProperty("comment");
+      // Put comment information into an object
+      HashMap<String, String> comment = new HashMap<String, String>();
+      comment.put("user", username);
+      comment.put("comment", text);
+      allComments.add(comment);
+    }
+
+    // Convert comment data to Json
+    Gson gson = new Gson();
+    commentsJson = gson.toJson(allComments);
+    System.out.println(commentsJson);
+    
     response.setContentType("application/json");
     response.getWriter().println(commentsJson);
+
+    // response.sendRedirect("/index.html");
+
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
     // Get data from input form.
     String username = getParameter(request, "username", "");
     String text = getParameter(request, "comment", "");
-    
-    // Add data to comments hashmap
-    HashMap<String, String> comment = new HashMap<String, String>();
-    comment.put("user", username);
-    comment.put("comment", text);
-    allComments.add(comment);
+    long timestamp = System.currentTimeMillis();
 
-    // Convert hashmap to json
-    commentsJson = gson.toJson(allComments);
+    // Create comment entity
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("user", username);
+    commentEntity.setProperty("comment", text);
+    commentEntity.setProperty("timestamp", timestamp);
 
-    response.setContentType("application/json");
-    response.getWriter().println(commentsJson);
-    System.out.println(commentsJson);
+    // Create datastore instance and store comment entity
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
 
     response.sendRedirect("/index.html");
   }
@@ -66,6 +93,7 @@ public class DataServlet extends HttpServlet {
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
     if (value == null) {
+      System.out.println("Default");
       return defaultValue;
     }
     return value;
