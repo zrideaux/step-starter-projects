@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Roboto+Mono&family=Roboto:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <script src="script.js"></script>
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div id="content">
+    <div id="content" tabindex="0">
       <div id="about" class="tab-content">
         <h1>About Me</h1>
         <hr>
@@ -119,7 +119,7 @@
         </form>
         <hr>
         <form>
-          <label>Show How Many Comments?</label>
+          <label>Comments Displayed:</label>
           <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5">
               <option value="5" selected="selected">5 Comments</option>
               <option value="10">10 Comments</option>
