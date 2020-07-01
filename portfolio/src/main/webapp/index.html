@@ -14,11 +14,11 @@
         <span id="initial-r">R</span>
       </div>
       <div id="sidebar-buttons">
-        <button id="default-tab" class="tab-button open" onclick="openTab(event, 'about')">About</button>
-        <button class="tab-button" onclick="openTab(event, 'experience')">Experience</button>
-        <button class="tab-button" onclick="openTab(event, 'projects')">Projects</button>
-        <button class="tab-button" onclick="openTab(event, 'server')">Server</button>
-        <button class="tab-button" onclick="openTab(event, 'comment')">Comment</button>
+        <button id="about-tab" class="tab-button" onclick="openTab(event, 'about')">About</button>
+        <button id="experience-tab" class="tab-button" onclick="openTab(event, 'experience')">Experience</button>
+        <button id="projects-tab" class="tab-button" onclick="openTab(event, 'projects')">Projects</button>
+        <button id="server-tab" class="tab-button" onclick="openTab(event, 'server')">Server</button>
+        <button id="comments-tab" class="tab-button" onclick="openTab(event, 'comments')">Comments</button>
       </div>
       <div id="media-links">
         <a href="https://github.com/zrideaux"><img src="/images/GitHub-Mark-Light-120px.png" alt="GitHub"></a>
@@ -104,7 +104,7 @@
         <ul id="json-messages"><ul>
       </div>
 
-      <div id="comment" class="tab-content">
+      <div id="comments" class="tab-content">
         <h1>Comments</h1>
         <hr>
         <p>You can leave a comment here!</p> 
@@ -129,7 +129,7 @@
         </form>
         <ul id="comment-section"></ul>
       </div>
-    <script>defaultTab();</script>   
+    <script>reopenTab(); defaultTab();</script>   
     </div>
   </body>
 </html>
