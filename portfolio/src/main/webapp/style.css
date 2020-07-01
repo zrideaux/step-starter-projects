@@ -214,6 +214,11 @@ hr {
   color: #FFFFFF;
 }
 
+.java-tag {
+  background-color: #ED8B00;
+  color: #FFFFFF;
+}
+
 /* Portrait View Styles */
 @media only screen and (orientation: portrait) {
     body {
