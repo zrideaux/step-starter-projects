@@ -57,10 +57,15 @@ function openTab(tabName) {
 /**
  * Get comments from the servlet and display them on the page.
  */
-function getMessageFromServlet() {
-    fetch('/data?comments=0').then(response => response.json()).then(commentsArray => {
+function getCommentsFromServlet() {
+    var numberOfComments = document.getElementById("number-of-comments").value;
+    fetch('/data?comments=' + numberOfComments).then(response => response.json()).then(commentsArray => {
+        // Clear comment section
         commentSection = document.getElementById('comment-section');
+        commentSection.innerHTML = "";
         console.log(commentsArray);
+        
+        // Fill comment section based on selection
         for (var i= commentsArray.length - 1; i >= 0; i--) {
             newComment = document.createElement("li");
             
@@ -74,7 +79,7 @@ function getMessageFromServlet() {
             deleteLink.className = "comment-delete";
             deleteLink.innerText = "Delete";
             deleteLink.setAttribute("href", "#");
-            
+
             newComment.appendChild(commentUser);
             newComment.appendChild(deleteLink);
             newComment.appendChild(commentText);

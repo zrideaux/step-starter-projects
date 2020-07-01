@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Roboto+Mono&family=Roboto:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="getCommentsFromServlet();">
     <div id="sidebar">
       <div id="initials">
         <span id="initial-z">Z</span>
@@ -118,14 +118,18 @@
           <input type="submit"></input>
         </form>
         <hr>
-        <form action="/data">
+        <form>
           <label>Show How Many Comments?</label>
-          <input name="show" type="number" onchange="this.form.submit()" placeholder="ex. 5"></input>
+          <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5">
+              <option value="5" selected="selected">5 Comments</option>
+              <option value="10">10 Comments</option>
+              <option value="20">20 Comments</option>
+              <option value="-1">All Comments</option>
+          </select>
         </form>
         <ul id="comment-section"></ul>
       </div>
     <script>defaultTab();</script>   
     </div>
   </body>
-  <script>getMessageFromServlet();</script>
 </html>
