@@ -17,6 +17,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -47,10 +48,13 @@ public class DataServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String username = (String) entity.getProperty("user");
       String text = (String) entity.getProperty("comment");
+      String key = (String) KeyFactory.keyToString(entity.getKey()); 
+
       // Put comment information into an object
       HashMap<String, String> comment = new HashMap<String, String>();
       comment.put("user", username);
       comment.put("comment", text);
+      comment.put("key", key);
       allComments.add(comment);
     }
 
@@ -90,7 +94,7 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("user", username);
     commentEntity.setProperty("comment", text);
     commentEntity.setProperty("timestamp", timestamp);
-
+    
     // Create datastore instance and store comment entity
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);

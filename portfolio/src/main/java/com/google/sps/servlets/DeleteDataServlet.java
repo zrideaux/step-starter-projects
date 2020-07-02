@@ -17,6 +17,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -32,17 +33,38 @@ public class DeleteDataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String toDelete = getParameter(request, "key", "all");
     // Get all the comments in datastore
     Query query = new Query("Comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    
-    // Delete each comment
-    for (Entity entity : results.asIterable()) {
-      datastore.delete(entity.getKey());
-    }
 
-    response.setContentType("text/plain");
-    response.getWriter().println("Comments Deleted.");
+    if (!toDelete.equals("all")) {
+      datastore.delete(KeyFactory.stringToKey(toDelete));
+
+      response.setContentType("text/plain");
+      response.getWriter().println("Comment Deleted.");
+    } else {  
+      // Delete each comment
+      for (Entity entity : results.asIterable()) {
+        datastore.delete(entity.getKey());
+      }
+
+      response.setContentType("text/plain");
+      response.getWriter().println("Comments Deleted.");
+    }
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      System.out.println("Default");
+      return defaultValue;
+    }
+    return value;
   }
 }
