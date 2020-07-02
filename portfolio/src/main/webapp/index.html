@@ -117,7 +117,6 @@
           <br>
           <input type="submit"></input>
         </form>
-        <hr>
         <div id="comment-actions">
           <form>
             <label>Comments Displayed:</label>
@@ -128,7 +127,7 @@
               <option value="-1">All Comments</option>
             </select>
           </form>
-          <button action="POST" onclick="deleteAllComments();">Delete All Comments</button>
+          <button action="POST" id="delete-all" onclick="deleteAllComments();">Delete All Comments</button>
         </div>
         <ul id="comment-section"></ul>
       </div>
