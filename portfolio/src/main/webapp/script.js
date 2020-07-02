@@ -80,17 +80,17 @@ function getCommentsFromServlet() {
         // Fill comment section based on selection
         for (var i = 0; i < commentsArray.length; i++) {
             newComment = document.createElement('li');
-            
+    
             commentUser = document.createElement('span');
             commentUser.className = 'comment-username';
             commentUser.innerText = commentsArray[i].user;
+            deleteLink = document.createElement('button');
+            deleteLink.className = 'comment-delete';
+            deleteLink.innerText = 'Delete ' + commentsArray[i].key;
+            deleteLink.setAttribute('onclick', 'deleteComment(\'' + commentsArray[i].key + '\')');
             commentText = document.createElement('p');
             commentText.className = 'comment-text';
             commentText.innerText = commentsArray[i].comment;
-            deleteLink = document.createElement('a');
-            deleteLink.className = 'comment-delete';
-            deleteLink.innerText = 'Delete';
-            deleteLink.setAttribute('href', '#');
 
             newComment.appendChild(commentUser);
             newComment.appendChild(deleteLink);
@@ -109,6 +109,17 @@ function deleteAllComments() {
         // Clear comment section
         commentSection = document.getElementById('comment-section');
         commentSection.innerHTML = '';
+        console.log(text);
+    });
+}
+
+/**
+ * Delete a single specified comment when called.
+ */
+function deleteComment(key) {
+    fetch('/delete-data?key=' + key, {method: "POST"}).then(response => response.text()).then(text => {
+        // Refresh comment section
+        getCommentsFromServlet();
         console.log(text);
     });
 }
