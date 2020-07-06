@@ -48,16 +48,26 @@ function defaultTab() {
 }
 
 /**
- * Get a message from the servlet.
+ * Get comments from the servlet and display them on the page.
  */
 function getMessageFromServlet() {
-    fetch('/data').then(response => response.json()).then(myObject => {
-        console.log(myObject);
-        list = document.getElementById('json-messages');
-        for (message in myObject) {
-            listItem = document.createElement("li");
-            listItem.innerText = myObject[message];
-            list.appendChild(listItem);
+    fetch('/data').then(response => response.json()).then(commentsArray => {
+        commentSection = document.getElementById('comment-section');
+        console.log(commentsArray);
+        for (var i= commentsArray.length - 1; i >= 0; i--) {
+            newComment = document.createElement("li");
+            
+            commentUser = document.createElement("p");
+            commentUser.className = "comment-username";
+            commentUser.innerText = commentsArray[i].user;
+            commentText = document.createElement("p");
+            commentText.className = "comment-text";
+            commentText.innerText = commentsArray[i].comment;
+            
+            newComment.appendChild(commentUser);
+            newComment.appendChild(commentText);
+            
+            commentSection.appendChild(newComment);
         }
     });
 }

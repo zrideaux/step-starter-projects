@@ -18,6 +18,7 @@
         <button class="tab-button" onclick="openTab(event, 'experience')">Experience</button>
         <button class="tab-button" onclick="openTab(event, 'projects')">Projects</button>
         <button class="tab-button" onclick="openTab(event, 'server')">Server</button>
+        <button class="tab-button" onclick="openTab(event, 'comment')">Comment</button>
       </div>
       <div id="media-links">
         <a href="https://github.com/zrideaux"><img src="/images/GitHub-Mark-Light-120px.png" alt="GitHub"></a>
@@ -100,6 +101,24 @@
         <hr>
         <p class="subtitle">This page is used to display information from the servlet.</p>
         <ul id="json-messages"><ul>
+      </div>
+
+      <div id="comment" class="tab-content">
+        <h1>Comments</h1>
+        <hr>
+        <p>You can leave a comment here!</p> 
+        <form action="/data" method="POST">
+          <label>Name</label>
+          <br>
+          <input type="text" name="username" placeholder="ex. Ada Lovelace"></input>
+          <br>
+          <label>Comment</label>
+          <br>
+          <input type="text" name="comment" placeholder="ex. Good work!"></input>
+          <br>
+          <input type="submit"></input>
+        </form>
+        <ul id="comment-section"></ul>
       </div>
     <script>defaultTab();</script>   
     </div>

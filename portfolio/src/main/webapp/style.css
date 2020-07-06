@@ -6,7 +6,7 @@ html {
 body {
   display: flex;
   flex-flow: row nowrap;
-  font-family: sans-serif;
+  font-family: "Roboto", sans-serif;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -134,6 +134,17 @@ hr {
   width: 850px;
 }
 
+.comment-username {
+  font-family: "Montserrat", sans-serif;
+}
+
+.comment-text {
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
 @media only screen and (min-width: 1536px) {
   #content {
     min-width: 55%;
@@ -200,6 +211,11 @@ hr {
 
 .illustrator-tag {
   background-color: #ff9a00;
+  color: #FFFFFF;
+}
+
+.java-tag {
+  background-color: #ED8B00;
   color: #FFFFFF;
 }
 
