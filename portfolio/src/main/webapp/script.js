@@ -37,34 +37,63 @@ function openTab(event, tabName) {
     if (event !== undefined) {
         event.currentTarget.className += ' open';   
     }
+
+    window.history.pushState('page2', 'Title', '?tab=' + tabName);
 }
 
 /**
  * Display a specified default tab when called.
  */
-function defaultTab() {
-    document.getElementById('default-tab').className += ' open';
-    openTab(event, 'about');
+function defaultTab(tabName='about') {
+    var queryParameters = new URLSearchParams(window.location.search);
+    if (queryParameters.has('tab') === false) {
+        openTab(event, tabName);
+        document.getElementById(tabName + '-tab').className += ' open';
+    }
+}
+
+/**
+ * Display a previously open tab when called.
+ * Used for refreshes such as comment submissions.
+ */
+function reopenTab() {
+    var queryParameters = new URLSearchParams(window.location.search);
+    if (queryParameters.has('tab')) {
+        tabName = queryParameters.get('tab');
+        console.log(tabName + '-tab');
+        openTab(event, tabName);
+        document.getElementById(tabName + '-tab').className += ' open';
+    }
 }
 
 /**
  * Get comments from the servlet and display them on the page.
  */
-function getMessageFromServlet() {
-    fetch('/data').then(response => response.json()).then(commentsArray => {
+function getCommentsFromServlet() {
+    var numberOfComments = document.getElementById('number-of-comments').value;
+    fetch('/data?comments=' + numberOfComments).then(response => response.json()).then(commentsArray => {
+        // Clear comment section
         commentSection = document.getElementById('comment-section');
+        commentSection.innerHTML = '';
         console.log(commentsArray);
-        for (var i= commentsArray.length - 1; i >= 0; i--) {
-            newComment = document.createElement("li");
+        
+        // Fill comment section based on selection
+        for (var i = 0; i < commentsArray.length; i++) {
+            newComment = document.createElement('li');
             
-            commentUser = document.createElement("p");
-            commentUser.className = "comment-username";
+            commentUser = document.createElement('span');
+            commentUser.className = 'comment-username';
             commentUser.innerText = commentsArray[i].user;
-            commentText = document.createElement("p");
-            commentText.className = "comment-text";
+            commentText = document.createElement('p');
+            commentText.className = 'comment-text';
             commentText.innerText = commentsArray[i].comment;
-            
+            deleteLink = document.createElement('a');
+            deleteLink.className = 'comment-delete';
+            deleteLink.innerText = 'Delete';
+            deleteLink.setAttribute('href', '#');
+
             newComment.appendChild(commentUser);
+            newComment.appendChild(deleteLink);
             newComment.appendChild(commentText);
             
             commentSection.appendChild(newComment);

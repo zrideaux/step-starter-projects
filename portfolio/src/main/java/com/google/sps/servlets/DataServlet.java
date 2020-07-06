@@ -54,9 +54,21 @@ public class DataServlet extends HttpServlet {
       allComments.add(comment);
     }
 
+    // Limit the number of comments shown.
+    int numberOfCommentsShown = Integer.parseInt(getParameter(request, "comments", "5"));
+    ArrayList<HashMap> shownComments = new ArrayList<HashMap>();
+    if (numberOfCommentsShown == -1) {
+      shownComments = allComments;
+    } else {
+      for (int i=0; i < numberOfCommentsShown  && i < allComments.size(); i++) {
+        shownComments.add(allComments.get(i));
+      }
+    }
+    
+
     // Convert comment data to Json
     Gson gson = new Gson();
-    commentsJson = gson.toJson(allComments);
+    commentsJson = gson.toJson(shownComments);
     System.out.println(commentsJson);
     
     response.setContentType("application/json");
@@ -83,7 +95,7 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
 
-    response.sendRedirect("/index.html");
+    response.sendRedirect("/index.html?tab=comments");
   }
 
   /**

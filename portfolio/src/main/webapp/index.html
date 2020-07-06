@@ -2,23 +2,23 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Roboto+Mono&family=Roboto:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="getCommentsFromServlet();">
     <div id="sidebar">
       <div id="initials">
         <span id="initial-z">Z</span>
         <span id="initial-r">R</span>
       </div>
       <div id="sidebar-buttons">
-        <button id="default-tab" class="tab-button open" onclick="openTab(event, 'about')">About</button>
-        <button class="tab-button" onclick="openTab(event, 'experience')">Experience</button>
-        <button class="tab-button" onclick="openTab(event, 'projects')">Projects</button>
-        <button class="tab-button" onclick="openTab(event, 'server')">Server</button>
-        <button class="tab-button" onclick="openTab(event, 'comment')">Comment</button>
+        <button id="about-tab" class="tab-button" onclick="openTab(event, 'about')">About</button>
+        <button id="experience-tab" class="tab-button" onclick="openTab(event, 'experience')">Experience</button>
+        <button id="projects-tab" class="tab-button" onclick="openTab(event, 'projects')">Projects</button>
+        <button id="server-tab" class="tab-button" onclick="openTab(event, 'server')">Server</button>
+        <button id="comments-tab" class="tab-button" onclick="openTab(event, 'comments')">Comments</button>
       </div>
       <div id="media-links">
         <a href="https://github.com/zrideaux"><img src="/images/GitHub-Mark-Light-120px.png" alt="GitHub"></a>
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div id="content">
+    <div id="content" tabindex="0">
       <div id="about" class="tab-content">
         <h1>About Me</h1>
         <hr>
@@ -48,6 +48,7 @@
           <span class="tool css-tag">css</span>
           <span class="tool javascript-tag">javascript</span>
           <span class="tool appengine-tag">app engine</span>
+          <span class="tool java-tag">java</span>
         </h3>
         <span class="subtitle">&#62; 15 Jun 2020 - Present</span>
         <p>I am currently serving as a STEP Intern at Google!</p>
@@ -103,25 +104,32 @@
         <ul id="json-messages"><ul>
       </div>
 
-      <div id="comment" class="tab-content">
+      <div id="comments" class="tab-content">
         <h1>Comments</h1>
         <hr>
         <p>You can leave a comment here!</p> 
         <form action="/data" method="POST">
           <label>Name</label>
-          <br>
           <input type="text" name="username" placeholder="ex. Ada Lovelace"></input>
           <br>
           <label>Comment</label>
-          <br>
           <input type="text" name="comment" placeholder="ex. Good work!"></input>
           <br>
           <input type="submit"></input>
         </form>
+        <hr>
+        <form>
+          <label>Comments Displayed:</label>
+          <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5">
+              <option value="5" selected="selected">5 Comments</option>
+              <option value="10">10 Comments</option>
+              <option value="20">20 Comments</option>
+              <option value="-1">All Comments</option>
+          </select>
+        </form>
         <ul id="comment-section"></ul>
       </div>
-    <script>defaultTab();</script>   
+    <script>reopenTab(); defaultTab();</script>   
     </div>
   </body>
-  <script>getMessageFromServlet();</script>
 </html>
