@@ -96,8 +96,6 @@ public class DataServlet extends HttpServlet {
     // Create datastore instance and store comment entity
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
-
-    // response.sendRedirect("/index.html?tab=comments");
   }
 
   /**
