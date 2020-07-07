@@ -37,6 +37,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+          
     ArrayList<HashMap> allComments = new ArrayList<HashMap>();
     
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
@@ -77,9 +78,6 @@ public class DataServlet extends HttpServlet {
     
     response.setContentType("application/json");
     response.getWriter().println(commentsJson);
-
-    // response.sendRedirect("/index.html");
-
   }
 
   @Override
@@ -98,8 +96,6 @@ public class DataServlet extends HttpServlet {
     // Create datastore instance and store comment entity
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
-
-    response.sendRedirect("/index.html?tab=comments");
   }
 
   /**

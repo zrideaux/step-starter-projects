@@ -60,7 +60,6 @@ function reopenTab() {
     var queryParameters = new URLSearchParams(window.location.search);
     if (queryParameters.has('tab')) {
         tabName = queryParameters.get('tab');
-        console.log(tabName + '-tab');
         openTab(event, tabName);
         document.getElementById(tabName + '-tab').className += ' open';
     }
@@ -71,7 +70,12 @@ function reopenTab() {
  */
 function getCommentsFromServlet() {
     var numberOfComments = document.getElementById('number-of-comments').value;
-    fetch('/data?comments=' + numberOfComments).then(response => response.json()).then(commentsArray => {
+    var url = '/data?comments=' + numberOfComments;
+    console.log(url);
+
+    fetch(url, {method: 'GET'})
+    .then(response => response.json())
+    .then(commentsArray => {
         // Clear comment section
         commentSection = document.getElementById('comment-section');
         commentSection.innerHTML = '';
@@ -80,7 +84,7 @@ function getCommentsFromServlet() {
         // Fill comment section based on selection
         for (var i = 0; i < commentsArray.length; i++) {
             newComment = document.createElement('li');
-    
+
             commentUser = document.createElement('span');
             commentUser.className = 'comment-username';
             commentUser.innerText = commentsArray[i].user;
@@ -99,6 +103,32 @@ function getCommentsFromServlet() {
             commentSection.appendChild(newComment);
         }
     });
+}
+
+/**
+ * Add a comment to datastore when called.
+ */
+function addComment() {
+    // Get comment from page when submit pressed.
+    var username = document.getElementById('input-username').value;
+    var comment = document.getElementById('input-comment').value;
+
+    var http = new XMLHttpRequest();
+    var url = '/data';
+    var commentData = 'username=' + username + '&comment=' + comment;
+
+    // Send a POST request to DataServlet
+    http.open('POST', url, true);
+    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    http.onreadystatechange = function () {
+        if (http.readyState == 4 && http.status == 200) {
+            // Refresh comment section
+            getCommentsFromServlet();
+        }
+    }
+    
+    http.send(commentData);
 }
 
 /**
