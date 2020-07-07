@@ -153,3 +153,12 @@ function deleteComment(key) {
         console.log(text);
     });
 }
+
+/**
+ * Checks if a user is logged in when called.
+ */
+function loggedIn() {
+    fetch('/login', {method: "GET"}).then(response => response.json()).then(loginInfo => {
+        console.log(text);
+    });
+}
