@@ -118,16 +118,14 @@
         <button id="input-submit" onclick="addComment();">Submit</button>
         
         <div id="comment-actions">
-          <form>
-            <label>Comments Displayed:</label>
-            <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5">
-              <option value="5" selected="selected">5 Comments</option>
-              <option value="10">10 Comments</option>
-              <option value="20">20 Comments</option>
-              <option value="-1">All Comments</option>
-            </select>
-          </form>
-          <button action="POST" id="delete-all" onclick="deleteAllComments();">Delete All Comments</button>
+          <label>Comments Displayed:</label>
+          <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5">
+            <option value="5" selected="selected">5 Comments</option>
+            <option value="10">10 Comments</option>
+            <option value="20">20 Comments</option>
+            <option value="-1">All Comments</option>
+          </select>
+          <button id="delete-all" onclick="deleteAllComments();">Delete All Comments</button>
         </div>
         <ul id="comment-section"></ul>
       </div>
