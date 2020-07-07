@@ -108,15 +108,15 @@
         <h1>Comments</h1>
         <hr>
         <p>You can leave a comment here!</p> 
-        <form action="/data" method="POST">
-          <label>Name</label>
-          <input type="text" name="username" placeholder="ex. Ada Lovelace"></input>
-          <br>
-          <label>Comment</label>
-          <input type="text" name="comment" placeholder="ex. Good work!"></input>
-          <br>
-          <input type="submit"></input>
-        </form>
+        
+        <label>Name</label>
+        <input id="input-username" type="text" name="username" placeholder="ex. Ada Lovelace"></input>
+        <br>
+        <label>Comment</label>
+        <input id="input-comment" type="text" name="comment" placeholder="ex. Good work!"></input>
+        <br>
+        <button id="input-submit" onclick="addComment();">Submit</button>
+        
         <div id="comment-actions">
           <form>
             <label>Comments Displayed:</label>
