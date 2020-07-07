@@ -13,6 +13,10 @@ body {
   width: 100%
 }
 
+button, label {
+  font-family: "Roboto", sans-serif;
+}
+
 h1 {
   font-family: "Montserrat", sans-serif;
   font-weight: 900;
@@ -50,6 +54,7 @@ hr {
 }
 
 input {
+  font-family: "Roboto", sans-serif;
   margin-bottom: 1em;
 }
 
@@ -142,6 +147,19 @@ input {
   width: 850px;
 }
 
+#comment-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 1em 0 1em 0;
+}
+
+#delete-all {
+  background-color: #ff3661;
+  border: none;
+  border-radius: 3px;
+  color: #FFFFFF;
+}
+
 .comment-username {
   font-family: "Montserrat", sans-serif;
 }
@@ -154,9 +172,16 @@ input {
 }
 
 .comment-delete {
+  background: none;
+  border: none;
+  color: #ff3661;
   font-size: .75em;
   margin-left: 10px;
   text-decoration: none;
+}
+
+.comment-delete:hover {
+  text-decoration: underline;
 }
 
 @media only screen and (min-width: 1536px) {
@@ -241,6 +266,9 @@ input {
 
     #sidebar {
         flex-flow: column wrap;
+        -webkit-box-shadow: 0px 0px 10px 0px #00000075;
+        -moz-box-shadow: 0px 0px 10px 0px #00000075;
+        box-shadow: 0px 0px 10px 0px #00000075;
     }
 
     #initials {
