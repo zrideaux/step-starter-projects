@@ -122,7 +122,6 @@ function addComment() {
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     http.onreadystatechange = function () {
-        console.log(http.status);
         if (http.readyState == 4 && http.status == 200) {
             // Refresh comment section
             getCommentsFromServlet();
@@ -130,13 +129,6 @@ function addComment() {
     }
     
     http.send(commentData);
-
-    // fetch('/data', {method: "POST"}).then(response => response.text()).then(text => {
-    //     // Clear comment section
-    //     commentSection = document.getElementById('comment-section');
-    //     commentSection.innerHTML = '';
-    //     console.log(text);
-    // });
 }
 
 /**
