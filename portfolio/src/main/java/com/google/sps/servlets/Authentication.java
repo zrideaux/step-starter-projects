@@ -42,12 +42,12 @@ public class Authentication extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
 
     if (userService.isUserLoggedIn()) {
-      String userEmail = userService.getCurrentUser().getEmail();
+      String email = userService.getCurrentUser().getEmail();
       String loggedIn = "true";
       String urlToRedirectToAfterUserLogsOut = "/";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
-      loginInfo.put(EMAIL_KEY, userEmail);
+      loginInfo.put(EMAIL_KEY, email);
       loginInfo.put(LOGGED_IN_KEY, loggedIn);
       loginInfo.put(LOGOUT_URL_KEY, logoutUrl);
     } else {
