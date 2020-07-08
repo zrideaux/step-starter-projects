@@ -17,17 +17,17 @@
  * other content. 
  */
 function openTab(event, tabName) {
-    var tabContent, tabButton;
+    let tabContent, tabButton;
 
     // Hide all the content by default
     tabContent = document.getElementsByClassName('tab-content');
-    for (var i=0; i < tabContent.length; i++) {
+    for (let i=0; i < tabContent.length; i++) {
         tabContent[i].style.display = 'none';
     }
 
     // Remove the open class from each tab when one is clicked
     tabButton = document.getElementsByClassName('tab-button');
-    for (var i=0; i < tabContent.length; i++) {
+    for (let i=0; i < tabContent.length; i++) {
         tabButton[i].className = tabButton[i].className.replace(' open', '');
     }
     
@@ -45,7 +45,7 @@ function openTab(event, tabName) {
  * Display a specified default tab when called.
  */
 function defaultTab(tabName='about') {
-    var queryParameters = new URLSearchParams(window.location.search);
+    let queryParameters = new URLSearchParams(window.location.search);
     if (queryParameters.has('tab') === false) {
         openTab(event, tabName);
         document.getElementById(tabName + '-tab').className += ' open';
@@ -57,7 +57,7 @@ function defaultTab(tabName='about') {
  * Used for refreshes such as comment submissions.
  */
 function reopenTab() {
-    var queryParameters = new URLSearchParams(window.location.search);
+    let queryParameters = new URLSearchParams(window.location.search);
     if (queryParameters.has('tab')) {
         tabName = queryParameters.get('tab');
         openTab(event, tabName);
@@ -69,8 +69,8 @@ function reopenTab() {
  * Get comments from the servlet and display them on the page.
  */
 function getCommentsFromServlet() {
-    var numberOfComments = document.getElementById('number-of-comments').value;
-    var url = '/data?comments=' + numberOfComments;
+    const numberOfComments = document.getElementById('number-of-comments').value;
+    const url = '/data?comments=' + numberOfComments;
     console.log(url);
 
     fetch(url, {method: 'GET'})
@@ -82,7 +82,7 @@ function getCommentsFromServlet() {
         console.log(commentsArray);
         
         // Fill comment section based on selection
-        for (var i = 0; i < commentsArray.length; i++) {
+        for (let i = 0; i < commentsArray.length; i++) {
             newComment = document.createElement('li');
 
             commentUser = document.createElement('span');
@@ -110,12 +110,12 @@ function getCommentsFromServlet() {
  */
 function addComment() {
     // Get comment from page when submit pressed.
-    var username = document.getElementById('input-username').value;
-    var comment = document.getElementById('input-comment').value;
+    const username = document.getElementById('input-username').value;
+    const comment = document.getElementById('input-comment').value;
 
-    var http = new XMLHttpRequest();
-    var url = '/data';
-    var commentData = 'username=' + username + '&comment=' + comment;
+    const http = new XMLHttpRequest();
+    const url = '/data';
+    const commentData = 'username=' + username + '&comment=' + comment;
 
     // Send a POST request to DataServlet
     http.open('POST', url, true);
@@ -168,12 +168,13 @@ function logLoginStatus() {
  */
 function generateCommentForm() {
     fetch('/login', {method: 'GET'}).then(response => response.json()).then(loginInfo => {
-        var userIsLoggedIn = (loginInfo.loggedIn == 'true');
-        var commentForm = document.getElementById('comment-form');
+        const userIsLoggedIn = (loginInfo.loggedIn == 'true');
+        const commentForm = document.getElementById('comment-form');
+        
             
         if (userIsLoggedIn) {
             // Generate a logout link
-            var logoutLink = document.createElement('a');
+            const logoutLink = document.createElement('a');
             logoutLink.href = loginInfo.logoutUrl;
             logoutLink.innerText = 'Logout';
             commentForm.appendChild(logoutLink);
@@ -183,7 +184,7 @@ function generateCommentForm() {
                 commentForm.removeChild(commentForm.firstChild);
             }
             // Generate a login link
-            var loginLink = document.createElement('a');
+            const loginLink = document.createElement('a');
             loginLink.href = loginInfo.loginUrl;
             loginLink.innerText = 'Login';
             commentForm.appendChild(loginLink);
