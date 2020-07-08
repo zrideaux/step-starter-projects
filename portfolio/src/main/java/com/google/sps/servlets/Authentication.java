@@ -27,6 +27,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/login")
 public class Authentication extends HttpServlet {
 
+  public final static String LOGOUT_URL_KEY = "logoutUrl";
+  public final static String LOGIN_URL_KEY = "loginUrl";
+  public final static String LOGGED_IN_KEY = "loggedIn";
+  public final static String EMAIL_KEY = "email";
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json");
@@ -35,28 +40,27 @@ public class Authentication extends HttpServlet {
     Gson gson = new Gson();
 
     UserService userService = UserServiceFactory.getUserService();
+
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
+      String loggedIn = "true";
       String urlToRedirectToAfterUserLogsOut = "/";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
-      
-      loginInfo.put("loggedIn", "true");  
-      loginInfo.put("email", userEmail);
-      loginInfo.put("logoutUrl", logoutUrl);
 
-      String loginInfoJson = gson.toJson(loginInfo);
-      
-      response.getWriter().println(loginInfoJson);
+      loginInfo.put(EMAIL_KEY, userEmail);
+      loginInfo.put(LOGGED_IN_KEY, loggedIn);
+      loginInfo.put(LOGOUT_URL_KEY, logoutUrl);
     } else {
+      String loggedIn = "false";
       String urlToRedirectToAfterUserLogsIn = "/";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
-      loginInfo.put("loggedIn", "false");
-      loginInfo.put("loginUrl", loginUrl);
-      
-      String loginInfoJson = gson.toJson(loginInfo);
-      
-      response.getWriter().println(loginInfoJson);
+      loginInfo.put(LOGGED_IN_KEY, loggedIn);
+      loginInfo.put(LOGIN_URL_KEY, loginUrl);
     }
+
+    String loginInfoJson = gson.toJson(loginInfo);
+    
+    response.getWriter().println(loginInfoJson);
   }
 }
