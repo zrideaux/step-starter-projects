@@ -109,14 +109,17 @@
         <hr>
         <p>You can leave a comment here!</p> 
         
-        <label>Name</label>
-        <input id="input-username" type="text" name="username" placeholder="ex. Ada Lovelace"></input>
-        <br>
-        <label>Comment</label>
-        <input id="input-comment" type="text" name="comment" placeholder="ex. Good work!"></input>
-        <br>
-        <button id="input-submit" onclick="addComment();">Submit</button>
-        
+        <div id="comment-form">
+          <label>Name</label>
+          <input id="input-username" type="text" name="username" placeholder="ex. Ada Lovelace"></input>
+          <br>
+          <label>Comment</label>
+          <input id="input-comment" type="text" name="comment" placeholder="ex. Good work!"></input>
+          <br>
+          <button id="input-submit" onclick="addComment();">Submit</button>
+          <script>generateCommentForm();</script>
+        </div>
+
         <div id="comment-actions">
           <label>Comments Displayed:</label>
           <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5">

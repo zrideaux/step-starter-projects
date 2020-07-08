@@ -147,7 +147,7 @@ function deleteAllComments() {
  * Delete a single specified comment when called.
  */
 function deleteComment(key) {
-    fetch('/delete-data?key=' + key, {method: "POST"}).then(response => response.text()).then(text => {
+    fetch('/delete-data?key=' + key, {method: 'POST'}).then(response => response.text()).then(text => {
         // Refresh comment section
         getCommentsFromServlet();
         console.log(text);
@@ -155,10 +155,38 @@ function deleteComment(key) {
 }
 
 /**
- * Checks if a user is logged in when called.
+ * Logs info regarding user's login status when called.
  */
-function loggedIn() {
-    fetch('/login', {method: "GET"}).then(response => response.json()).then(loginInfo => {
-        console.log(text);
+function logLoginStatus() {
+    fetch('/login', {method: 'GET'}).then(response => response.json()).then(loginInfo => {
+        console.log(loginInfo);
+    });
+}
+
+/**
+ * Fetches login info and generates comment form accordingly.
+ */
+function generateCommentForm() {
+    fetch('/login', {method: 'GET'}).then(response => response.json()).then(loginInfo => {
+        var userIsLoggedIn = (loginInfo.loggedIn == 'true');
+        var commentForm = document.getElementById('comment-form');
+            
+        if (userIsLoggedIn) {
+            // Generate a logout link
+            var logoutLink = document.createElement('a');
+            logoutLink.href = loginInfo.logoutUrl;
+            logoutLink.innerText = 'Logout';
+            commentForm.appendChild(logoutLink);
+        } else {
+            // Remove inputs from comment form if user not logged in
+            while (commentForm.firstChild) {
+                commentForm.removeChild(commentForm.firstChild);
+            }
+            // Generate a login link
+            var loginLink = document.createElement('a');
+            loginLink.href = loginInfo.loginUrl;
+            loginLink.innerText = 'Login';
+            commentForm.appendChild(loginLink);
+        }
     });
 }
