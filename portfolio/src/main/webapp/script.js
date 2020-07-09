@@ -45,7 +45,7 @@ function openTab(event, tabName) {
  * Display a specified default tab when called.
  */
 function defaultTab(tabName='about') {
-    let queryParameters = new URLSearchParams(window.location.search);
+    const queryParameters = new URLSearchParams(window.location.search);
     if (queryParameters.has('tab') === false) {
         openTab(event, tabName);
         document.getElementById(tabName + '-tab').className += ' open';
@@ -57,7 +57,7 @@ function defaultTab(tabName='about') {
  * Used for refreshes such as comment submissions.
  */
 function reopenTab() {
-    let queryParameters = new URLSearchParams(window.location.search);
+    const queryParameters = new URLSearchParams(window.location.search);
     if (queryParameters.has('tab')) {
         tabName = queryParameters.get('tab');
         openTab(event, tabName);
@@ -71,33 +71,30 @@ function reopenTab() {
 function getCommentsFromServlet() {
     const numberOfComments = document.getElementById('number-of-comments').value;
     const url = '/data?comments=' + numberOfComments;
-    console.log(url);
 
-    fetch(url, {method: 'GET'})
-    .then(response => response.json())
-    .then(commentsArray => {
+    fetch(url, {method: 'GET'}).then(response => response.json()).then(commentsArray => {
         // Clear comment section
         commentSection = document.getElementById('comment-section');
         commentSection.innerHTML = '';
         console.log(commentsArray);
         
-        // Fill comment section based on selection
         for (let i = 0; i < commentsArray.length; i++) {
             newComment = document.createElement('li');
 
             commentUser = document.createElement('span');
             commentUser.className = 'comment-username';
             commentUser.innerText = commentsArray[i].user;
+            newComment.appendChild(commentUser);
+    
             deleteLink = document.createElement('button');
             deleteLink.className = 'comment-delete';
             deleteLink.innerText = 'Delete ' + commentsArray[i].key;
             deleteLink.setAttribute('onclick', 'deleteComment(\'' + commentsArray[i].key + '\')');
+            newComment.appendChild(deleteLink);
+
             commentText = document.createElement('p');
             commentText.className = 'comment-text';
             commentText.innerText = commentsArray[i].comment;
-
-            newComment.appendChild(commentUser);
-            newComment.appendChild(deleteLink);
             newComment.appendChild(commentText);
             
             commentSection.appendChild(newComment);
@@ -135,11 +132,16 @@ function addComment() {
  * Delete all comments in datastore when called.
  */
 function deleteAllComments() {
-    fetch('/delete-data', {method: "POST"}).then(response => response.text()).then(text => {
-        // Clear comment section
-        commentSection = document.getElementById('comment-section');
-        commentSection.innerHTML = '';
-        console.log(text);
+    fetch('/login', {method: 'GET'}).then(response => response.json()).then(loginInfo => {
+        const userIsLoggedIn = (loginInfo.loggedIn === 'true');
+        console.log("loginInfo:",loginInfo);
+        if (userIsLoggedIn) {
+            fetch('/delete-data', {method: "POST"}).then(response => response.text()).then(text => {
+                // Refresh comment section
+                getCommentsFromServlet();
+                console.log(text);
+            });
+        }
     });
 }
 
@@ -147,10 +149,15 @@ function deleteAllComments() {
  * Delete a single specified comment when called.
  */
 function deleteComment(key) {
-    fetch('/delete-data?key=' + key, {method: 'POST'}).then(response => response.text()).then(text => {
-        // Refresh comment section
-        getCommentsFromServlet();
-        console.log(text);
+    fetch('/login', {method: 'GET'}).then(response => response.json()).then(loginInfo => {
+        const userIsLoggedIn = (loginInfo.loggedIn === 'true');
+        if (userIsLoggedIn) {
+            fetch('/delete-data?key=' + key, {method: 'POST'}).then(response => response.text()).then(text => {
+                // Refresh comment section
+                getCommentsFromServlet();
+                console.log(text);
+            });
+        }
     });
 }
 
@@ -169,25 +176,28 @@ function logLoginStatus() {
 function generateCommentForm() {
     fetch('/login', {method: 'GET'}).then(response => response.json()).then(loginInfo => {
         const userIsLoggedIn = (loginInfo.loggedIn == 'true');
+        const userIsAdmin = (loginInfo.isAdmin == 'true');
         const commentForm = document.getElementById('comment-form');
         
+        document.getElementById('delete-all').style.display = 'none';
             
         if (userIsLoggedIn) {
             // Generate a logout link
-            const logoutLink = document.createElement('a');
+            const logoutLink = document.getElementById('logout-link');
             logoutLink.href = loginInfo.logoutUrl;
-            logoutLink.innerText = 'Logout';
-            commentForm.appendChild(logoutLink);
+            logoutLink.style.display = 'inline';
+            if (userIsAdmin) {
+                document.getElementById('delete-all').style.display = 'block';
+            }
         } else {
             // Remove inputs from comment form if user not logged in
             while (commentForm.firstChild) {
                 commentForm.removeChild(commentForm.firstChild);
             }
             // Generate a login link
-            const loginLink = document.createElement('a');
+            const loginLink = document.getElementById('login-link');
             loginLink.href = loginInfo.loginUrl;
-            loginLink.innerText = 'Login';
-            commentForm.appendChild(loginLink);
+            loginLink.style.display = 'inline';
         }
     });
 }
