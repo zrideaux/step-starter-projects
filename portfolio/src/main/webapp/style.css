@@ -158,6 +158,7 @@ input {
   border: none;
   border-radius: 3px;
   color: #FFFFFF;
+  display: none;
 }
 
 .comment-username {
