@@ -258,6 +258,11 @@ input {
   color: #FFFFFF;
 }
 
+#login-link,
+#logout-link {
+    display: none;
+}
+
 /* Portrait View Styles */
 @media only screen and (orientation: portrait) {
     body {

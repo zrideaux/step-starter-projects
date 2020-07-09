@@ -21,6 +21,8 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private String commentsJson = new String();
+  private UserService userService = UserServiceFactory.getUserService();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -86,12 +89,14 @@ public class DataServlet extends HttpServlet {
     String username = getParameter(request, "username", "");
     String text = getParameter(request, "comment", "");
     long timestamp = System.currentTimeMillis();
+    String email = userService.getCurrentUser().getEmail();
 
     // Create comment entity
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("user", username);
     commentEntity.setProperty("comment", text);
     commentEntity.setProperty("timestamp", timestamp);
+    commentEntity.setProperty("email", email);
     
     // Create datastore instance and store comment entity
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

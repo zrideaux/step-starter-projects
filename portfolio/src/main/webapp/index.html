@@ -107,19 +107,22 @@
       <div id="comments" class="tab-content">
         <h1>Comments</h1>
         <hr>
-        <p>You can leave a comment here!</p> 
+        <p>You can leave a comment here! <a id="login-link" href="#">Sign In</a><a id="logout-link" href="#">Sign Out</a></p> 
         
-        <label>Name</label>
-        <input id="input-username" type="text" name="username" placeholder="ex. Ada Lovelace"></input>
-        <br>
-        <label>Comment</label>
-        <input id="input-comment" type="text" name="comment" placeholder="ex. Good work!"></input>
-        <br>
-        <button id="input-submit" onclick="addComment();">Submit</button>
-        
+        <div id="comment-form">
+          <label>Name</label>
+          <input id="input-username" type="text" name="username" placeholder="ex. Ada Lovelace" aria-label="The name of the commenter."></input>
+          <br>
+          <label>Comment</label>
+          <input id="input-comment" type="text" name="comment" placeholder="ex. Good work!" aria-label="The comment body."></input>
+          <br>
+          <button id="input-submit" onclick="addComment();">Submit</button>
+          <script>generateCommentForm();</script>
+        </div>
+
         <div id="comment-actions">
           <label>Comments Displayed:</label>
-          <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5">
+          <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5" arialabel="The number of comments to display."> 
             <option value="5" selected="selected">5 Comments</option>
             <option value="10">10 Comments</option>
             <option value="20">20 Comments</option>
