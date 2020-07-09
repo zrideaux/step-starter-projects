@@ -140,6 +140,9 @@ function deleteAllComments() {
                 // Refresh comment section
                 getCommentsFromServlet();
                 console.log(text);
+                if (text.startsWith("Error")) {
+                    alert(text);
+                }
             });
         }
     });
@@ -156,6 +159,9 @@ function deleteComment(key) {
                 // Refresh comment section
                 getCommentsFromServlet();
                 console.log(text);
+                if (text.startsWith("Error")) {
+                    alert(text);
+                }
             });
         }
     });
