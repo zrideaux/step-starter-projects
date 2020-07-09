@@ -31,6 +31,7 @@ public class Authentication extends HttpServlet {
   public final static String LOGIN_URL_KEY = "loginUrl";
   public final static String LOGGED_IN_KEY = "loggedIn";
   public final static String EMAIL_KEY = "email";
+  public final static String IS_ADMIN_KEY = "isAdmin";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -46,10 +47,12 @@ public class Authentication extends HttpServlet {
       String loggedIn = "true";
       String urlToRedirectToAfterUserLogsOut = "/";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
+      String isAdmin = String.valueOf(userService.isUserAdmin());
 
       loginInfo.put(EMAIL_KEY, email);
       loginInfo.put(LOGGED_IN_KEY, loggedIn);
       loginInfo.put(LOGOUT_URL_KEY, logoutUrl);
+      loginInfo.put(IS_ADMIN_KEY, isAdmin);
     } else {
       String loggedIn = "false";
       String urlToRedirectToAfterUserLogsIn = "/";

@@ -21,6 +21,8 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,26 +35,31 @@ public class DeleteDataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String toDelete = getParameter(request, "key", "all");
-    // Get all the comments in datastore
-    Query query = new Query("Comment");
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
+    response.setContentType("text/plain");
+    UserService userService = UserServiceFactory.getUserService();
+    if (userService.isUserAdmin()) {
+      String toDelete = getParameter(request, "key", "all");
+      // Get all the comments in datastore
+      Query query = new Query("Comment");
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      PreparedQuery results = datastore.prepare(query);
 
-    if (!toDelete.equals("all")) {
+      if (!toDelete.equals("all")) {
       datastore.delete(KeyFactory.stringToKey(toDelete));
 
-      response.setContentType("text/plain");
       response.getWriter().println("Comment Deleted.");
-    } else {  
+      } else {  
       // Delete each comment
       for (Entity entity : results.asIterable()) {
-        datastore.delete(entity.getKey());
+          datastore.delete(entity.getKey());
       }
 
-      response.setContentType("text/plain");
       response.getWriter().println("Comments Deleted.");
+      }
+    } else {
+      response.getWriter().println("No Comments Deleted. User Is Not Admin.");
     }
+
   }
 
   /**
