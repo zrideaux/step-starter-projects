@@ -85,18 +85,20 @@ function getCommentsFromServlet() {
             commentUser.className = 'comment-username';
             commentUser.innerText = commentsArray[i].user;
             newComment.appendChild(commentUser);
-    
-            deleteLink = document.createElement('button');
-            deleteLink.className = 'comment-delete';
-            deleteLink.innerText = 'Delete ' + commentsArray[i].key;
-            deleteLink.setAttribute('onclick', 'deleteComment(\'' + commentsArray[i].key + '\')');
-            newComment.appendChild(deleteLink);
+
+            if (commentsArray[i].deletable === 'true') {
+                deleteLink = document.createElement('button');
+                deleteLink.className = 'comment-delete';
+                deleteLink.innerText = 'Delete';
+                deleteLink.setAttribute('onclick', 'deleteComment(\'' + commentsArray[i].key + '\')');
+                newComment.appendChild(deleteLink);
+            }
 
             commentText = document.createElement('p');
             commentText.className = 'comment-text';
             commentText.innerText = commentsArray[i].comment;
             newComment.appendChild(commentText);
-            
+
             commentSection.appendChild(newComment);
         }
     });
@@ -107,8 +109,8 @@ function getCommentsFromServlet() {
  */
 function addComment() {
     // Get comment from page when submit pressed.
-    const username = document.getElementById('input-username').value;
-    const comment = document.getElementById('input-comment').value;
+    const username = encodeURIComponent(document.getElementById('input-username').value);
+    const comment = encodeURIComponent(document.getElementById('input-comment').value);
 
     const http = new XMLHttpRequest();
     const url = '/data';
@@ -140,6 +142,9 @@ function deleteAllComments() {
                 // Refresh comment section
                 getCommentsFromServlet();
                 console.log(text);
+                if (text.startsWith("Error")) {
+                    alert(text);
+                }
             });
         }
     });
@@ -156,6 +161,9 @@ function deleteComment(key) {
                 // Refresh comment section
                 getCommentsFromServlet();
                 console.log(text);
+                if (text.startsWith("Error")) {
+                    alert(text);
+                }
             });
         }
     });
@@ -178,8 +186,6 @@ function generateCommentForm() {
         const userIsLoggedIn = (loginInfo.loggedIn == 'true');
         const userIsAdmin = (loginInfo.isAdmin == 'true');
         const commentForm = document.getElementById('comment-form');
-        
-        document.getElementById('delete-all').style.display = 'none';
             
         if (userIsLoggedIn) {
             // Generate a logout link

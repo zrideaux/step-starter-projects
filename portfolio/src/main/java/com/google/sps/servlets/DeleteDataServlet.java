@@ -17,6 +17,7 @@ package com.google.sps.servlets;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -36,30 +37,47 @@ public class DeleteDataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/plain");
+
     UserService userService = UserServiceFactory.getUserService();
-    if (userService.isUserAdmin()) {
-      String toDelete = getParameter(request, "key", "all");
-      // Get all the comments in datastore
-      Query query = new Query("Comment");
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      PreparedQuery results = datastore.prepare(query);
 
-      if (!toDelete.equals("all")) {
-      datastore.delete(KeyFactory.stringToKey(toDelete));
+    String toDelete = getParameter(request, "key", "all");
+    // Get all the comments in datastore
+    Query query = new Query("Comment");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-      response.getWriter().println("Comment Deleted.");
-      } else {  
-      // Delete each comment
-      for (Entity entity : results.asIterable()) {
+    if (toDelete.equals("all")) {
+      // Delete all comments if user is admin.
+      if (userService.isUserAdmin()) {  
+        PreparedQuery results = datastore.prepare(query);
+        for (Entity entity : results.asIterable()) {
           datastore.delete(entity.getKey());
-      }
-
-      response.getWriter().println("Comments Deleted.");
+        }
+        response.getWriter().println("All Comments Deleted.");
+      } else {
+        response.getWriter().println("Error: No comments deleted. User is not admin.");
       }
     } else {
-      response.getWriter().println("No Comments Deleted. User Is Not Admin.");
-    }
+      try {
+        // Get information about specified comment entity.
+        Key commentKey = KeyFactory.stringToKey(toDelete);
+        System.out.println(commentKey);
+        Entity commentEntity = new Entity("Comment");    
+        commentEntity = datastore.get(commentKey);
+        String originalPoster = (String) commentEntity.getProperty("email");
+        String currentUser = userService.getCurrentUser().getEmail();
 
+        // Check if current user has sufficient permissions to delete specified comment.
+        if (userService.isUserAdmin() || (currentUser.equals(originalPoster))) {
+          datastore.delete(KeyFactory.stringToKey(toDelete));
+          response.getWriter().println("Comment Deleted.");
+        } else {
+          response.getWriter().println("Error: User lacks sufficient permissions to delete comment.");
+        }
+      } catch (Exception e) {
+        System.out.println(e);
+        response.getWriter().println("Error: Comment could not be deleted. Please try again.");
+      }
+    }
   }
 
   /**

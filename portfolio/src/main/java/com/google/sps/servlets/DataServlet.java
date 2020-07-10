@@ -46,19 +46,32 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    
+
+    Boolean userIsLoggedIn = userService.isUserLoggedIn();
+    String currentUser = new String();
+    if (userIsLoggedIn) {
+        currentUser = (String) userService.getCurrentUser().getEmail(); 
+    }
+
     for (Entity entity : results.asIterable()) {
       // Retrieve comment
       long id = entity.getKey().getId();
       String username = (String) entity.getProperty("user");
       String text = (String) entity.getProperty("comment");
-      String key = (String) KeyFactory.keyToString(entity.getKey()); 
+      String key = (String) KeyFactory.keyToString(entity.getKey());
+      String email = (String) entity.getProperty("email");
+
 
       // Put comment information into an object
       HashMap<String, String> comment = new HashMap<String, String>();
       comment.put("user", username);
       comment.put("comment", text);
       comment.put("key", key);
+      if (userIsLoggedIn && (userService.isUserAdmin() || currentUser.equals(email))) {
+        comment.put("deletable", "true");
+      } else {
+        comment.put("deletable", "false");
+      }
       allComments.add(comment);
     }
 
@@ -97,7 +110,7 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("comment", text);
     commentEntity.setProperty("timestamp", timestamp);
     commentEntity.setProperty("email", email);
-    
+
     // Create datastore instance and store comment entity
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
