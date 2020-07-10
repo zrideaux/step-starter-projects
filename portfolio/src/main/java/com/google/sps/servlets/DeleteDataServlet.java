@@ -44,9 +44,19 @@ public class DeleteDataServlet extends HttpServlet {
     // Get all the comments in datastore
     Query query = new Query("Comment");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
 
-    if (!toDelete.equals("all")) {
+    if (toDelete.equals("all")) {
+      // Delete all comments if user is admin.
+      if (userService.isUserAdmin()) {  
+        PreparedQuery results = datastore.prepare(query);
+        for (Entity entity : results.asIterable()) {
+          datastore.delete(entity.getKey());
+        }
+        response.getWriter().println("All Comments Deleted.");
+      } else {
+        response.getWriter().println("Error: No comments deleted. User is not admin.");
+      }
+    } else {
       try {
         // Get information about specified comment entity.
         Key commentKey = KeyFactory.stringToKey(toDelete);
@@ -66,16 +76,6 @@ public class DeleteDataServlet extends HttpServlet {
       } catch (Exception e) {
         System.out.println(e);
         response.getWriter().println("Error: Comment could not be deleted. Please try again.");
-      }
-    } else {
-      // Delete all comments if user is admin.
-      if (userService.isUserAdmin()) {  
-        for (Entity entity : results.asIterable()) {
-            datastore.delete(entity.getKey());
-        }
-        response.getWriter().println("All Comments Deleted.");
-      } else {
-        response.getWriter().println("Error: No comments deleted. User is not admin.");
       }
     }
   }

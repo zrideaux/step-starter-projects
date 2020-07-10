@@ -98,7 +98,7 @@ function getCommentsFromServlet() {
             commentText.className = 'comment-text';
             commentText.innerText = commentsArray[i].comment;
             newComment.appendChild(commentText);
-            
+
             commentSection.appendChild(newComment);
         }
     });
