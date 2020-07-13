@@ -81,7 +81,7 @@ function getCommentsFromServlet() {
         const languageOfComments = document.getElementById('language-of-comments').value;
 
         for (let i = 0; i < commentsArray.length; i++) {
-            const translateUrl = 'translate?comment=' + commentsArray[i].comment + '&lang=' + languageOfComments;
+            let translateUrl = 'translate?comment=' + commentsArray[i].comment + '&lang=' + languageOfComments;
             
             fetch(translateUrl, {method: 'POST'}).then(response => response.text()).then(translatedComment =>{
                 console.log(translatedComment);
