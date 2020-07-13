@@ -70,36 +70,44 @@ function reopenTab() {
  */
 function getCommentsFromServlet() {
     const numberOfComments = document.getElementById('number-of-comments').value;
-    const url = '/data?comments=' + numberOfComments;
+    const commentsUrl = '/data?comments=' + numberOfComments;
 
-    fetch(url, {method: 'GET'}).then(response => response.json()).then(commentsArray => {
+    fetch(commentsUrl, {method: 'GET'}).then(response => response.json()).then(commentsArray => {
         // Clear comment section
         commentSection = document.getElementById('comment-section');
         commentSection.innerHTML = '';
         console.log(commentsArray);
         
+        const languageOfComments = document.getElementById('language-of-comments').value;
+
         for (let i = 0; i < commentsArray.length; i++) {
-            newComment = document.createElement('li');
+            const translateUrl = 'translate?comment=' + commentsArray[i].comment + '&lang=' + languageOfComments;
+            
+            fetch(translateUrl, {method: 'POST'}).then(response => response.text()).then(translatedComment =>{
+                console.log(translatedComment);
+                
+                newComment = document.createElement('li');
 
-            commentUser = document.createElement('span');
-            commentUser.className = 'comment-username';
-            commentUser.innerText = commentsArray[i].user;
-            newComment.appendChild(commentUser);
+                commentUser = document.createElement('span');
+                commentUser.className = 'comment-username';
+                commentUser.innerText = commentsArray[i].user;
+                newComment.appendChild(commentUser);
 
-            if (commentsArray[i].deletable === 'true') {
-                deleteLink = document.createElement('button');
-                deleteLink.className = 'comment-delete';
-                deleteLink.innerText = 'Delete';
-                deleteLink.setAttribute('onclick', 'deleteComment(\'' + commentsArray[i].key + '\')');
-                newComment.appendChild(deleteLink);
-            }
+                if (commentsArray[i].deletable === 'true') {
+                    deleteLink = document.createElement('button');
+                    deleteLink.className = 'comment-delete';
+                    deleteLink.innerText = 'Delete';
+                    deleteLink.setAttribute('onclick', 'deleteComment(\'' + commentsArray[i].key + '\')');
+                    newComment.appendChild(deleteLink);
+                }
 
-            commentText = document.createElement('p');
-            commentText.className = 'comment-text';
-            commentText.innerText = commentsArray[i].comment;
-            newComment.appendChild(commentText);
+                commentText = document.createElement('p');
+                commentText.className = 'comment-text';
+                commentText.innerText = translatedComment;
+                newComment.appendChild(commentText);
 
-            commentSection.appendChild(newComment);
+                commentSection.appendChild(newComment);
+            });
         }
     });
 }
