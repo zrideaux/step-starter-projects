@@ -17,7 +17,6 @@
         <button id="about-tab" class="tab-button" onclick="openTab(event, 'about')">About</button>
         <button id="experience-tab" class="tab-button" onclick="openTab(event, 'experience')">Experience</button>
         <button id="projects-tab" class="tab-button" onclick="openTab(event, 'projects')">Projects</button>
-        <button id="server-tab" class="tab-button" onclick="openTab(event, 'server')">Server</button>
         <button id="comments-tab" class="tab-button" onclick="openTab(event, 'comments')">Comments</button>
       </div>
       <div id="media-links">
@@ -97,13 +96,6 @@
         <p>Using a combination of several technologies I am creating an interactive portfolio site as one of my Google STEP Intern starter projects.
       </div>
 
-      <div id="server" class="tab-content">
-        <h1>Server</h1>
-        <hr>
-        <p class="subtitle">This page is used to display information from the servlet.</p>
-        <ul id="json-messages"><ul>
-      </div>
-
       <div id="comments" class="tab-content">
         <h1>Comments</h1>
         <hr>
@@ -131,7 +123,9 @@
           <label>Language:</label>
           <select name="language" id="language-of-comments" onchange="getCommentsFromServlet();" placeholder="ex. 5" arialabel="The language of comments to display."> 
             <option value="en" selected="selected">English</option>
+            <option value="zh">Chinese</option>
             <option value="es">Spanish</option>
+            <option value="ja">Japanese</option>
           </select>
           <button id="delete-all" onclick="deleteAllComments();">Delete All Comments</button>
         </div>

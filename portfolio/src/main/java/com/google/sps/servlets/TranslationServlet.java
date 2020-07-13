@@ -33,23 +33,15 @@ public class TranslationServlet extends HttpServlet {
     String languageCode = request.getParameter("lang");
     String translatedText = new String();
     
-    // // Do the translation.
-    // Translate translate = TranslateOptions.getDefaultInstance().getService();
-    // Translation translation =
-    //     translate.translate(originalText, Translate.TranslateOption.targetLanguage(languageCode));
-    // String translatedText = translation.getTranslatedText();
-
-    // Put in a placeholder until API can be used.
-    System.out.println(languageCode);
-    if (languageCode.equals("es")) {
-        translatedText = " (Will be translated to Spanish)";
-    } else {
-        translatedText = " (Will be translated to English)";
-    }
+    // Do the translation.
+    Translate translate = TranslateOptions.getDefaultInstance().getService();
+    Translation translation =
+        translate.translate(originalText, Translate.TranslateOption.targetLanguage(languageCode));
+    translatedText = translation.getTranslatedText();
 
     // Output the translation.
     response.setContentType("text/html; charset=UTF-8");
     response.setCharacterEncoding("UTF-8");
-    response.getWriter().println(originalText + translatedText);
+    response.getWriter().println(translatedText);
   }
 }

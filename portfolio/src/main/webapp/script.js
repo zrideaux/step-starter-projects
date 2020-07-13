@@ -76,16 +76,13 @@ function getCommentsFromServlet() {
         // Clear comment section
         commentSection = document.getElementById('comment-section');
         commentSection.innerHTML = '';
-        console.log(commentsArray);
         
         const languageOfComments = document.getElementById('language-of-comments').value;
 
         for (let i = 0; i < commentsArray.length; i++) {
             let translateUrl = 'translate?comment=' + commentsArray[i].comment + '&lang=' + languageOfComments;
             
-            fetch(translateUrl, {method: 'POST'}).then(response => response.text()).then(translatedComment =>{
-                console.log(translatedComment);
-                
+            fetch(translateUrl, {method: 'POST'}).then(response => response.text()).then(translatedComment =>{                
                 newComment = document.createElement('li');
 
                 commentUser = document.createElement('span');
