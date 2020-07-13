@@ -14,10 +14,20 @@
 
 package com.google.sps;
 
+import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
+    ArrayList<TimeRange> day = new ArrayList<TimeRange>();
+    
+    // Request duration exceeds a day [noOptionsForTooLongOfARequest()]
+    if (request.getDuration() > 1440) {
+      return Arrays.asList();
+    }
+
     throw new UnsupportedOperationException("TODO: Implement this method.");
   }
 }
