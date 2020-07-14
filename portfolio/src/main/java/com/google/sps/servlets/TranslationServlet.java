@@ -17,7 +17,14 @@ package com.google.sps.servlets;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,20 +35,38 @@ public class TranslationServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the request parameters.
-    String originalText = request.getParameter("comment");
-    String languageCode = request.getParameter("lang");
-    String translatedText = new String();
+    Gson gson = new Gson();
     
-    // Do the translation.
+    // Get the original comments and the desired language.
+    String originalComments = request.getParameter("comments");
+    String languageCode = request.getParameter("lang");
+    System.out.println("Original Comments [TranslationServlet] -- " + originalComments);
+
+    // Convert the comments query string to a JSON array.
+    JsonParser parser = new JsonParser();
+    JsonArray commentsJsonArray = parser.parse(originalComments).getAsJsonArray();
+
+    // Add each comment's text to a list of strings to be translated. 
+    ArrayList<String> toTranslate = new ArrayList<String>();
+    for (int i = 0; i < commentsJsonArray.size(); i++) {
+      toTranslate.add(commentsJsonArray.get(i).getAsJsonObject().get("comment").getAsString());
+    }
+    
+    // Do the translation and save to a list of translation objects
     Translate translate = TranslateOptions.getDefaultInstance().getService();
-    Translation translation =
-        translate.translate(originalText, Translate.TranslateOption.targetLanguage(languageCode));
-    translatedText = translation.getTranslatedText();
+    List<Translation> translations =
+      translate.translate(toTranslate, Translate.TranslateOption.targetLanguage(languageCode));
+    
+    // Update each comment in the JSON with an 
+    for (int i = 0; i < commentsJsonArray.size(); i++) {
+      commentsJsonArray.get(i).getAsJsonObject().addProperty("comment", translations.get(i).getTranslatedText());
+    }
 
     // Output the translation.
+    String translatedCommentsJson = gson.toJson(commentsJsonArray);
+    System.out.println("Translated Comments [TranslationServlet] -- " + translatedCommentsJson);
     response.setContentType("text/html; charset=UTF-8");
     response.setCharacterEncoding("UTF-8");
-    response.getWriter().println(translatedText);
+    response.getWriter().println(translatedCommentsJson);
   }
 }
