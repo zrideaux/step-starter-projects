@@ -76,7 +76,7 @@ public class DataServlet extends HttpServlet {
     }
 
     // Limit the number of comments shown.
-    int numberOfCommentsShown = Integer.parseInt(getParameter(request, "comments", "5"));
+    int numberOfCommentsShown = Integer.parseInt(getParameter(request, "numcomments", "5"));
     ArrayList<HashMap> shownComments = new ArrayList<HashMap>();
     if (numberOfCommentsShown == -1) {
       shownComments = allComments;

@@ -57,15 +57,15 @@ public class TranslationServlet extends HttpServlet {
     List<Translation> translations =
       translate.translate(toTranslate, Translate.TranslateOption.targetLanguage(languageCode));
     
-    // Update each comment in the JSON with an 
+    // Update each comment in the JSON with the translation
     for (int i = 0; i < commentsJsonArray.size(); i++) {
       commentsJsonArray.get(i).getAsJsonObject().addProperty("comment", translations.get(i).getTranslatedText());
     }
 
-    // Output the translation.
+    // Output the translation
     String translatedCommentsJson = gson.toJson(commentsJsonArray);
     System.out.println("Translated Comments [TranslationServlet] -- " + translatedCommentsJson);
-    response.setContentType("text/html; charset=UTF-8");
+    response.setContentType("application/json; charset=UTF-8");
     response.setCharacterEncoding("UTF-8");
     response.getWriter().println(translatedCommentsJson);
   }
