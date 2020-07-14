@@ -70,42 +70,45 @@ function reopenTab() {
  */
 function getCommentsFromServlet() {
     const numberOfComments = document.getElementById('number-of-comments').value;
-    const commentsUrl = '/data?comments=' + numberOfComments;
+    const commentsUrl = '/data?numcomments=' + numberOfComments;
 
-    fetch(commentsUrl, {method: 'GET'}).then(response => response.json()).then(commentsArray => {
+    fetch(commentsUrl, {method: 'GET'}).then(response => response.text()).then(commentsArray => {
         // Clear comment section
         commentSection = document.getElementById('comment-section');
         commentSection.innerHTML = '';
         
         const languageOfComments = document.getElementById('language-of-comments').value;
+        const translateUrl = 'translate?comments=' + commentsArray + '&lang=' + languageOfComments;
 
-        for (let i = 0; i < commentsArray.length; i++) {
-            let translateUrl = 'translate?comment=' + commentsArray[i].comment + '&lang=' + languageOfComments;
-            
-            fetch(translateUrl, {method: 'POST'}).then(response => response.text()).then(translatedComment =>{                
-                newComment = document.createElement('li');
+        fetch(translateUrl, {method: 'POST'}).then(response => response.json()).then(translatedComments =>{
+            if (translatedComments.hasOwnProperty('error')) {
+                alert("There was an error translating the comments. Try again.");
+            } else {
+                for (let i = 0; i < translatedComments.length; i++) {        
+                    newComment = document.createElement('li');
 
-                commentUser = document.createElement('span');
-                commentUser.className = 'comment-username';
-                commentUser.innerText = commentsArray[i].user;
-                newComment.appendChild(commentUser);
+                    commentUser = document.createElement('span');
+                    commentUser.className = 'comment-username';
+                    commentUser.innerText = translatedComments[i].user;
+                    newComment.appendChild(commentUser);
 
-                if (commentsArray[i].deletable === 'true') {
-                    deleteLink = document.createElement('button');
-                    deleteLink.className = 'comment-delete';
-                    deleteLink.innerText = 'Delete';
-                    deleteLink.setAttribute('onclick', 'deleteComment(\'' + commentsArray[i].key + '\')');
-                    newComment.appendChild(deleteLink);
+                    if (translatedComments[i].deletable === 'true') {
+                        deleteLink = document.createElement('button');
+                        deleteLink.className = 'comment-delete';
+                        deleteLink.innerText = 'Delete';
+                        deleteLink.setAttribute('onclick', 'deleteComment(\'' + translatedComments[i].key + '\')');
+                        newComment.appendChild(deleteLink);
+                    }
+
+                    commentText = document.createElement('p');
+                    commentText.className = 'comment-text';
+                    commentText.innerText = translatedComments[i].comment;
+                    newComment.appendChild(commentText);
+
+                    commentSection.appendChild(newComment);
                 }
-
-                commentText = document.createElement('p');
-                commentText.className = 'comment-text';
-                commentText.innerText = translatedComment;
-                newComment.appendChild(commentText);
-
-                commentSection.appendChild(newComment);
-            });
-        }
+            }
+        });
     });
 }
 
