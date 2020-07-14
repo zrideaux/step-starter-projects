@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.HashMap;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,38 +36,52 @@ public class TranslationServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Gson gson = new Gson();
-    
-    // Get the original comments and the desired language.
-    String originalComments = request.getParameter("comments");
-    String languageCode = request.getParameter("lang");
-    System.out.println("Original Comments [TranslationServlet] -- " + originalComments);
-
-    // Convert the comments query string to a JSON array.
-    JsonParser parser = new JsonParser();
-    JsonArray commentsJsonArray = parser.parse(originalComments).getAsJsonArray();
-
-    // Add each comment's text to a list of strings to be translated. 
-    ArrayList<String> toTranslate = new ArrayList<String>();
-    for (int i = 0; i < commentsJsonArray.size(); i++) {
-      toTranslate.add(commentsJsonArray.get(i).getAsJsonObject().get("comment").getAsString());
-    }
-    
-    // Do the translation and save to a list of translation objects
-    Translate translate = TranslateOptions.getDefaultInstance().getService();
-    List<Translation> translations =
-      translate.translate(toTranslate, Translate.TranslateOption.targetLanguage(languageCode));
-    
-    // Update each comment in the JSON with the translation
-    for (int i = 0; i < commentsJsonArray.size(); i++) {
-      commentsJsonArray.get(i).getAsJsonObject().addProperty("comment", translations.get(i).getTranslatedText());
-    }
-
-    // Output the translation
-    String translatedCommentsJson = gson.toJson(commentsJsonArray);
-    System.out.println("Translated Comments [TranslationServlet] -- " + translatedCommentsJson);
     response.setContentType("application/json; charset=UTF-8");
     response.setCharacterEncoding("UTF-8");
-    response.getWriter().println(translatedCommentsJson);
+
+    Gson gson = new Gson();
+
+    try {
+      // Get the original comments and the desired language.
+      String originalComments = request.getParameter("comments");
+      String languageCode = request.getParameter("lang");
+      System.out.println("Original Comments [TranslationServlet] -- " + originalComments);
+
+      // Convert the comments query string to a JSON array.
+      JsonParser parser = new JsonParser();
+      JsonArray commentsJsonArray = parser.parse(originalComments).getAsJsonArray();
+
+      // Add each comment's text to a list of strings to be translated. 
+      ArrayList<String> toTranslate = new ArrayList<String>();
+      for (int i = 0; i < commentsJsonArray.size(); i++) {
+        toTranslate.add(commentsJsonArray.get(i).getAsJsonObject().get("comment").getAsString());
+      }
+      
+      // Do the translation and save to a list of translation objects
+      Translate translate = TranslateOptions.getDefaultInstance().getService();
+      List<Translation> translations =
+        translate.translate(toTranslate, Translate.TranslateOption.targetLanguage(languageCode));
+    
+      // Update each comment in the JSON with the translation
+      if (commentsJsonArray.size() == translations.size()) {
+        for (int i = 0; i < commentsJsonArray.size(); i++) {
+          commentsJsonArray.get(i).getAsJsonObject().addProperty("comment", translations.get(i).getTranslatedText());
+        }
+      } else {
+        throw new Exception();
+      }
+
+      // Output the translation
+      String translatedCommentsJson = gson.toJson(commentsJsonArray);
+      System.out.println("Translated Comments [TranslationServlet] -- " + translatedCommentsJson);
+      response.getWriter().println(translatedCommentsJson);
+    } catch (Exception E) {
+      System.out.println("Exception Raised: " + E);
+      HashMap<String, String> errorMessage = new HashMap<String, String>();
+      errorMessage.put("error", "error");
+      String errorMessageGson = gson.toJson(errorMessage);
+      System.out.println(errorMessageGson);
+      response.getWriter().println(errorMessageGson);
+    }
   }
 }
