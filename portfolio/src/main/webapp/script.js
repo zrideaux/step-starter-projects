@@ -76,35 +76,37 @@ function getCommentsFromServlet() {
         // Clear comment section
         commentSection = document.getElementById('comment-section');
         commentSection.innerHTML = '';
-
-        console.log(commentsArray);
         
         const languageOfComments = document.getElementById('language-of-comments').value;
         const translateUrl = 'translate?comments=' + commentsArray + '&lang=' + languageOfComments;
 
         fetch(translateUrl, {method: 'POST'}).then(response => response.json()).then(translatedComments =>{
-            for (let i = 0; i < translatedComments.length; i++) {        
-                newComment = document.createElement('li');
+            if (translatedComments.hasOwnProperty('error')) {
+                alert("There was an error translating the comments. Try again.");
+            } else {
+                for (let i = 0; i < translatedComments.length; i++) {        
+                    newComment = document.createElement('li');
 
-                commentUser = document.createElement('span');
-                commentUser.className = 'comment-username';
-                commentUser.innerText = translatedComments[i].user;
-                newComment.appendChild(commentUser);
+                    commentUser = document.createElement('span');
+                    commentUser.className = 'comment-username';
+                    commentUser.innerText = translatedComments[i].user;
+                    newComment.appendChild(commentUser);
 
-                if (translatedComments[i].deletable === 'true') {
-                    deleteLink = document.createElement('button');
-                    deleteLink.className = 'comment-delete';
-                    deleteLink.innerText = 'Delete';
-                    deleteLink.setAttribute('onclick', 'deleteComment(\'' + translatedComments[i].key + '\')');
-                    newComment.appendChild(deleteLink);
+                    if (translatedComments[i].deletable === 'true') {
+                        deleteLink = document.createElement('button');
+                        deleteLink.className = 'comment-delete';
+                        deleteLink.innerText = 'Delete';
+                        deleteLink.setAttribute('onclick', 'deleteComment(\'' + translatedComments[i].key + '\')');
+                        newComment.appendChild(deleteLink);
+                    }
+
+                    commentText = document.createElement('p');
+                    commentText.className = 'comment-text';
+                    commentText.innerText = translatedComments[i].comment;
+                    newComment.appendChild(commentText);
+
+                    commentSection.appendChild(newComment);
                 }
-
-                commentText = document.createElement('p');
-                commentText.className = 'comment-text';
-                commentText.innerText = translatedComments[i].comment;
-                newComment.appendChild(commentText);
-
-                commentSection.appendChild(newComment);
             }
         });
     });
