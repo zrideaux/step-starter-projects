@@ -121,6 +121,13 @@
             <option value="20">20 Comments</option>
             <option value="-1">All Comments</option>
           </select>
+          <label>Language:</label>
+          <select name="language" id="language-of-comments" onchange="getCommentsFromServlet();" placeholder="ex. 5" arialabel="The language of comments to display."> 
+            <option value="en" selected="selected">English</option>
+            <option value="zh">Chinese</option>
+            <option value="es">Spanish</option>
+            <option value="ja">Japanese</option>
+          </select>
           <button id="delete-all" onclick="deleteAllComments();">Delete All Comments</button>
         </div>
         <ul id="comment-section"></ul>
