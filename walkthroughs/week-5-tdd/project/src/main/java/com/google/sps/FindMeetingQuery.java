@@ -24,6 +24,8 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> availability = new ArrayList<TimeRange>();
     Event[] eventsArray = events.toArray(new Event[events.size()]);
+    
+
     availability.add(TimeRange.WHOLE_DAY);
     
     // Return no options if request duration exceeds a day [noOptionsForTooLongOfARequest()]
@@ -31,35 +33,53 @@ public final class FindMeetingQuery {
       return Arrays.asList();
     }
 
-    // Return entire day if there are no attendees [optionsForNoAttendees()]
+  
     if (events.size() == 0) {
-      if (request.getAttendees().isEmpty()) {
-        return Arrays.asList(TimeRange.WHOLE_DAY);
+      // Return entire day if there are no attendees [optionsForNoAttendees()]
+      // or no meeting conflicts [noConflicts()]
+      return Arrays.asList(TimeRange.WHOLE_DAY);
+    } else {
+      // Split the day into two options before and after events [eventSplitsRestriction()]
+      String requester = new String();
+      if (request.getAttendees().size() == 1) {
+        requester = request.getAttendees().iterator().next();
+        System.out.println(requester);
+      }
+
+
+      for (int i = 0; i < eventsArray.length; i++) {
+        for (int j = 0; j < availability.size(); j++) {
+          if (request.getAttendees().size() != 1 || eventsArray[i].getAttendees().contains(requester)) {
+            int eventStart = eventsArray[i].getWhen().start();
+            int eventEnd = eventsArray[i].getWhen().end();
+            int availabilityStart = availability.get(j).start();
+            int availabilityEnd = availability.get(j).end();
+
+            if (availability.get(j).overlaps(eventsArray[i].getWhen())) {
+              availability.add(j+1, TimeRange.fromStartEnd(eventEnd, availabilityEnd, false));
+              availability.set(j, TimeRange.fromStartEnd(availabilityStart, eventStart, false));
+            } 
+          }
+        }
+      }
+    
+      System.out.println(availability);
+      for (int k = 0; k < availability.size(); k++) {
+        int availabilityStart = availability.get(k).start();
+        int availabilityEnd = availability.get(k).end();
+        
+        // Remove spans too short. 
+        if (request.getDuration() > (availabilityEnd - availabilityStart)) {
+          availability.remove(k);
+          k--;
+        }
+      }
+    
+      if (true) {
+        return availability;
       }
     }
 
-
-    // // Split the day into two options before and after events [eventSplitsRestriction()]
-    // for (int i = 0; i < eventsArray.length; i++) {
-    //   for (int j = 0; j < availability.size(); i++) {
-    //     if (availability.get(j).contains(eventsArray[i].getWhen())) {
-    //       availability.add(j+1, TimeRange.fromStartEnd(
-    //         eventsArray[i].getWhen().end(),
-    //         availability.get(j).end(),
-    //         true
-    //       ));
-    //       availability.set(j, TimeRange.fromStartEnd(
-    //         availability.get(j).start(),
-    //         eventsArray[i].getWhen().start(),
-    //         false
-    //       ));
-    //       System.out.println("Availability: " + availability);
-    //     } 
-    //   }
-    // }
-    // return availability;
-    
-    throw new UnsupportedOperationException("TODO: Implement this method.");
-    
+    throw new UnsupportedOperationException("TODO: Implement this method."); 
   }
 }
