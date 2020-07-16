@@ -117,6 +117,7 @@ input {
 
 #media-links {
   align-items: center;
+  background-color: #212121;
   display: flex;
   flex-flow: column nowrap;
   padding: 10px;
