@@ -231,6 +231,7 @@ function createErrorAlert(errorMessage) {
     dismissButton = document.createElement('button');
     dismissButton.className = 'dismiss-alert';
     dismissButton.onclick = dismissErrorAlert; 
+    dismissButton.setAttribute('aria-label', 'Dismiss this alert.')
     dismissButton.innerText = 'X';
     
     errorAlert.appendChild(dismissButton);
