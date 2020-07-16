@@ -220,13 +220,14 @@ function createErrorAlert(errorMessage) {
     alertBox = document.getElementById('alerts-section');
     
     errorAlert = document.createElement('div');
-    errorAlert.className = "error-alert";
+    errorAlert.className = 'error-alert';
+    errorAlert.setAttribute('role', 'alert');
     errorAlert.innerText = errorMessage;
     
     dismissButton = document.createElement('button');
-    dismissButton.className = "dismiss-alert";
+    dismissButton.className = 'dismiss-alert';
     dismissButton.onclick = dismissErrorAlert; 
-    dismissButton.innerText = "X";
+    dismissButton.innerText = 'X';
     
     errorAlert.appendChild(dismissButton);
     alertBox.appendChild(errorAlert);
