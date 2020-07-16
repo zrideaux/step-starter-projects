@@ -82,7 +82,7 @@ function getCommentsFromServlet() {
 
         fetch(translateUrl, {method: 'POST'}).then(response => response.json()).then(translatedComments =>{
             if (translatedComments.hasOwnProperty('error')) {
-                alert("There was an error translating the comments. Try again.");
+                createErrorAlert("There was an error translating the comments. Try again.");
             } else {
                 for (let i = 0; i < translatedComments.length; i++) {        
                     newComment = document.createElement('li');
@@ -151,7 +151,7 @@ function deleteAllComments() {
                 getCommentsFromServlet();
                 console.log(text);
                 if (text.startsWith("Error")) {
-                    alert(text);
+                    createErrorAlert(text);
                 }
             });
         }
@@ -170,7 +170,7 @@ function deleteComment(key) {
                 getCommentsFromServlet();
                 console.log(text);
                 if (text.startsWith("Error")) {
-                    alert(text);
+                    createErrorAlert(text);
                 }
             });
         }
@@ -214,4 +214,26 @@ function generateCommentForm() {
             loginLink.style.display = 'inline';
         }
     });
+}
+
+function createErrorAlert(errorMessage) {
+    alertBox = document.getElementById('alerts-section');
+    
+    errorAlert = document.createElement('div');
+    errorAlert.className = "error-alert";
+    errorAlert.innerText = errorMessage;
+    
+    dismissButton = document.createElement('button');
+    dismissButton.className = "dismiss-alert";
+    dismissButton.onclick = dismissErrorAlert; 
+    dismissButton.innerText = "X";
+    
+    errorAlert.appendChild(dismissButton);
+    alertBox.appendChild(errorAlert);
+}
+
+function dismissErrorAlert(event) {
+    dismissButton = event.target;
+    errorAlert = dismissButton.parentNode;
+    errorAlert.remove();
 }
