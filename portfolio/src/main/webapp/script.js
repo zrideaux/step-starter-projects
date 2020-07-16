@@ -82,7 +82,7 @@ function getCommentsFromServlet() {
 
         fetch(translateUrl, {method: 'POST'}).then(response => response.json()).then(translatedComments =>{
             if (translatedComments.hasOwnProperty('error')) {
-                createErrorAlert("There was an error translating the comments. Try again.");
+                createErrorAlert('There was an error translating the comments. Try again.');
             } else {
                 for (let i = 0; i < translatedComments.length; i++) {        
                     newComment = document.createElement('li');
@@ -121,7 +121,7 @@ function addComment() {
     const comment = encodeURIComponent(document.getElementById('input-comment').value);
 
     if (username === '' || comment === '') {
-        createErrorAlert("The username and comment fields must not be blank.");
+        createErrorAlert('The username and comment fields must not be blank.');
     } else {
         const http = new XMLHttpRequest();
         const url = '/data';
@@ -148,13 +148,13 @@ function addComment() {
 function deleteAllComments() {
     fetch('/login', {method: 'GET'}).then(response => response.json()).then(loginInfo => {
         const userIsLoggedIn = (loginInfo.loggedIn === 'true');
-        console.log("loginInfo:",loginInfo);
+        console.log('loginInfo:',loginInfo);
         if (userIsLoggedIn) {
-            fetch('/delete-data', {method: "POST"}).then(response => response.text()).then(text => {
+            fetch('/delete-data', {method: 'POST'}).then(response => response.text()).then(text => {
                 // Refresh comment section
                 getCommentsFromServlet();
                 console.log(text);
-                if (text.startsWith("Error")) {
+                if (text.startsWith('Error')) {
                     createErrorAlert(text);
                 }
             });
@@ -173,7 +173,7 @@ function deleteComment(key) {
                 // Refresh comment section
                 getCommentsFromServlet();
                 console.log(text);
-                if (text.startsWith("Error")) {
+                if (text.startsWith('Error')) {
                     createErrorAlert(text);
                 }
             });
