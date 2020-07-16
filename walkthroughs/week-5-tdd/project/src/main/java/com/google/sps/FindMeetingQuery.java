@@ -22,11 +22,11 @@ import java.util.Collections;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    ArrayList<TimeRange> availability = new ArrayList<TimeRange>();
-    Event[] eventsArray = events.toArray(new Event[events.size()]);
     
-
+    ArrayList<TimeRange> availability = new ArrayList<TimeRange>();
     availability.add(TimeRange.WHOLE_DAY);
+    
+    Event[] eventsArray = events.toArray(new Event[events.size()]);
     
     // Return no options if request duration exceeds a day [noOptionsForTooLongOfARequest()]
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
