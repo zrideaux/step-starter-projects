@@ -22,64 +22,83 @@ import java.util.Collections;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    
-    ArrayList<TimeRange> availability = new ArrayList<TimeRange>();
-    availability.add(TimeRange.WHOLE_DAY);
-    
-    Event[] eventsArray = events.toArray(new Event[events.size()]);
-    
-    // Return no options if request duration exceeds a day [noOptionsForTooLongOfARequest()]
+    // First check if request is possible. If duration exceedsx a day return no options.
     if (request.getDuration() > TimeRange.WHOLE_DAY.duration()) {
       return Arrays.asList();
     }
 
-  
-    if (events.size() == 0) {
-      // Return entire day if there are no attendees [optionsForNoAttendees()]
-      // or no meeting conflicts [noConflicts()]
-      return Arrays.asList(TimeRange.WHOLE_DAY);
-    } else {
-      // Split the day into two options before and after events [eventSplitsRestriction()]
-      String requester = new String();
-      if (request.getAttendees().size() == 1) {
-        requester = request.getAttendees().iterator().next();
-        System.out.println(requester);
-      }
+    // Initialize list of possible times, start by making the whole day possible
+    ArrayList<TimeRange> possibleTimes = new ArrayList<TimeRange>();
+    possibleTimes.add(TimeRange.WHOLE_DAY);
 
-
-      for (int i = 0; i < eventsArray.length; i++) {
-        for (int j = 0; j < availability.size(); j++) {
-          if (request.getAttendees().size() != 1 || eventsArray[i].getAttendees().contains(requester)) {
-            int eventStart = eventsArray[i].getWhen().start();
-            int eventEnd = eventsArray[i].getWhen().end();
-            int availabilityStart = availability.get(j).start();
-            int availabilityEnd = availability.get(j).end();
-
-            if (availability.get(j).overlaps(eventsArray[i].getWhen())) {
-              availability.add(j+1, TimeRange.fromStartEnd(eventEnd, availabilityEnd, false));
-              availability.set(j, TimeRange.fromStartEnd(availabilityStart, eventStart, false));
-            } 
-          }
-        }
-      }
-    
-      System.out.println(availability);
-      for (int k = 0; k < availability.size(); k++) {
-        int availabilityStart = availability.get(k).start();
-        int availabilityEnd = availability.get(k).end();
-        
-        // Remove spans too short. 
-        if (request.getDuration() > (availabilityEnd - availabilityStart)) {
-          availability.remove(k);
-          k--;
-        }
-      }
-    
-      if (true) {
-        return availability;
+    // Remove times when events take place from possibleTimes
+    for (Event event : events) {
+      if (!Collections.disjoint(event.getAttendees(), request.getAttendees())) {
+        possibleTimes = updatePossibleTimes(possibleTimes, event);
       }
     }
 
-    throw new UnsupportedOperationException("TODO: Implement this method."); 
+    // Remove ranges in possibleTimes which aren't long enough for the request
+    possibleTimes = removeRangesTooShort(possibleTimes, request);
+
+    return possibleTimes;
+  }
+
+  /**
+   * Compare each TimeRange in possibleTimes with an event's start and end times.
+   * If the event contains the timeRange, it is removed from the possible times.
+   * If there is an overlap, the duration of the event is cut from the existing 
+   *   times and possibleTimes is updated accordingly.
+   * If the there is no overlap, possibleTimes is not changed. 
+   */
+  private ArrayList<TimeRange> updatePossibleTimes(ArrayList<TimeRange> possibleTimes, Event event) {
+    ArrayList<TimeRange> updatedTimes = new ArrayList<>();
+    
+    for (TimeRange timeRange : possibleTimes) {
+      // If an an event completely encapsulates a time range, don't add the range.
+      if (!event.getWhen().contains(timeRange)) {
+        if (event.getWhen().overlaps(timeRange)) {
+          // If an event conflicts with but doesn't completely contain a range in possibleTimes, 
+          // add possible replacements.
+          int possibleTimeStart = timeRange.start();
+          int possibleTimeEnd = timeRange.end();
+          int eventStart = event.getWhen().start();
+          int eventEnd = event.getWhen().end();
+
+          if (possibleTimeStart < eventStart) {
+            // possibleTime |-----| 
+            // eventStart      |-----|
+            updatedTimes.add(TimeRange.fromStartEnd(possibleTimeStart, eventStart, false));
+          }
+          if (eventEnd < possibleTimeEnd) {
+            // possibleTime    |-----|
+            // eventStart   |-----|
+            updatedTimes.add(TimeRange.fromStartEnd(eventEnd, possibleTimeEnd, false));
+          }
+        } else {
+          // Otherwise add the original possibility back 
+          updatedTimes.add(timeRange);
+        }
+      }
+    }
+    return updatedTimes;
+  }
+
+  /**
+   * Remove TimeRange objects that are shorter than the requested meeting's duration from the
+   * list of possible times.
+   */
+  private ArrayList<TimeRange> removeRangesTooShort(ArrayList<TimeRange> possibleTimes, MeetingRequest request) {
+    ArrayList<TimeRange> updatedTimes = new ArrayList<TimeRange>();
+
+    for (TimeRange timeRange: possibleTimes) {
+      if (request.getDuration() <= timeRange.duration()) {
+        // possibleTime |-----|
+        // requestDur    |---|
+        updatedTimes.add(timeRange);
+      }
+    }
+
+    return updatedTimes;
   }
 }
