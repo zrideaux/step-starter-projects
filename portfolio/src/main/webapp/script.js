@@ -120,22 +120,26 @@ function addComment() {
     const username = encodeURIComponent(document.getElementById('input-username').value);
     const comment = encodeURIComponent(document.getElementById('input-comment').value);
 
-    const http = new XMLHttpRequest();
-    const url = '/data';
-    const commentData = 'username=' + username + '&comment=' + comment;
+    if (username === '' || comment === '') {
+        createErrorAlert("The username and comment fields must not be blank.");
+    } else {
+        const http = new XMLHttpRequest();
+        const url = '/data';
+        const commentData = 'username=' + username + '&comment=' + comment;
 
-    // Send a POST request to DataServlet
-    http.open('POST', url, true);
-    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        // Send a POST request to DataServlet
+        http.open('POST', url, true);
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-    http.onreadystatechange = function () {
-        if (http.readyState == 4 && http.status == 200) {
-            // Refresh comment section
-            getCommentsFromServlet();
+        http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+                // Refresh comment section
+                getCommentsFromServlet();
+            }
         }
+        
+        http.send(commentData);
     }
-    
-    http.send(commentData);
 }
 
 /**
