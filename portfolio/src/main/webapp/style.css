@@ -148,6 +148,11 @@ input {
   width: 850px;
 }
 
+#comment-section {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
 #comment-actions {
   display: flex;
   justify-content: space-between;
@@ -283,6 +288,11 @@ input {
   color: #FFFFFF;
   margin: 5px 5px 5px 0px; 
   padding: inherit;
+}
+
+#loading-gif {
+  margin: 0 auto;
+  width: 50px;
 }
 
 /* Portrait View Styles */
