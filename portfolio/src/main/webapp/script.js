@@ -76,11 +76,13 @@ function getCommentsFromServlet() {
         // Clear comment section
         commentSection = document.getElementById('comment-section');
         commentSection.innerHTML = '';
+        createLoadingGif();
         
         const languageOfComments = document.getElementById('language-of-comments').value;
         const translateUrl = 'translate?comments=' + commentsArray + '&lang=' + languageOfComments;
 
         fetch(translateUrl, {method: 'POST'}).then(response => response.json()).then(translatedComments =>{
+            destroyLoadingGif();
             if (translatedComments.hasOwnProperty('error')) {
                 createErrorAlert('There was an error translating the comments. Try again.');
             } else {
@@ -178,6 +180,7 @@ function deleteComment(key) {
                 if (text.startsWith('Error')) {
                     createErrorAlert(text);
                 }
+
             });
         }
     });
@@ -244,4 +247,18 @@ function dismissErrorAlert(event) {
     dismissButton = event.target;
     errorAlert = dismissButton.parentNode;
     errorAlert.remove();
+}
+
+function createLoadingGif() {
+    loadingGif = document.createElement('img');
+    loadingGif.id = 'loading-gif';
+    loadingGif.src = '/images/loading.gif';
+    
+    commentSection = document.getElementById('comment-section');
+    commentSection.appendChild(loadingGif);
+}
+
+function destroyLoadingGif() {
+    loadingGif = document.getElementById('loading-gif');
+    loadingGif.remove();
 }
