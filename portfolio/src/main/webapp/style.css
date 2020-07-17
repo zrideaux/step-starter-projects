@@ -117,6 +117,7 @@ input {
 
 #media-links {
   align-items: center;
+  background-color: #212121;
   display: flex;
   flex-flow: column nowrap;
   padding: 10px;
@@ -262,6 +263,26 @@ input {
 #login-link,
 #logout-link {
     display: none;
+}
+
+.error-alert {
+  background-color: #E05571;
+  border-radius: 3px;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0px; 
+  padding: 5px;
+}
+
+.dismiss-alert {
+  align-self: flex-start;
+  background-color: #B83550;
+  border: none;
+  border-radius: 3px;
+  color: #FFFFFF;
+  margin: 5px 5px 5px 0px; 
+  padding: inherit;
 }
 
 /* Portrait View Styles */
