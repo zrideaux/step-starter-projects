@@ -68,15 +68,18 @@ public class TranslationServlet extends HttpServlet {
           commentsJsonArray.get(i).getAsJsonObject().addProperty("comment", translations.get(i).getTranslatedText());
         }
       } else {
-        throw new Exception();
+        throw new Exception("The number of comments translated did not match the number of original comments.");
       }
 
       // Output the translation
       String translatedCommentsJson = gson.toJson(commentsJsonArray);
       System.out.println("Translated Comments [TranslationServlet] -- " + translatedCommentsJson);
       response.getWriter().println(translatedCommentsJson);
-    } catch (Exception E) {
-      System.out.println("Exception Raised: " + E);
+    } catch (Exception e) {
+      System.out.println("Exception Raised: " + e);
+      System.out.println(e.getMessage());
+      
+      // Send error to front end
       HashMap<String, String> errorMessage = new HashMap<String, String>();
       errorMessage.put("error", "error");
       String errorMessageGson = gson.toJson(errorMessage);

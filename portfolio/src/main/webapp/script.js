@@ -82,7 +82,7 @@ function getCommentsFromServlet() {
 
         fetch(translateUrl, {method: 'POST'}).then(response => response.json()).then(translatedComments =>{
             if (translatedComments.hasOwnProperty('error')) {
-                alert("There was an error translating the comments. Try again.");
+                createErrorAlert('There was an error translating the comments. Try again.');
             } else {
                 for (let i = 0; i < translatedComments.length; i++) {        
                     newComment = document.createElement('li');
@@ -120,22 +120,26 @@ function addComment() {
     const username = encodeURIComponent(document.getElementById('input-username').value);
     const comment = encodeURIComponent(document.getElementById('input-comment').value);
 
-    const http = new XMLHttpRequest();
-    const url = '/data';
-    const commentData = 'username=' + username + '&comment=' + comment;
+    if (username === '' || comment === '') {
+        createErrorAlert('The username and comment fields must not be blank.');
+    } else {
+        const http = new XMLHttpRequest();
+        const url = '/data';
+        const commentData = 'username=' + username + '&comment=' + comment;
 
-    // Send a POST request to DataServlet
-    http.open('POST', url, true);
-    http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        // Send a POST request to DataServlet
+        http.open('POST', url, true);
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-    http.onreadystatechange = function () {
-        if (http.readyState == 4 && http.status == 200) {
-            // Refresh comment section
-            getCommentsFromServlet();
+        http.onreadystatechange = function () {
+            if (http.readyState == 4 && http.status == 200) {
+                // Refresh comment section
+                getCommentsFromServlet();
+            }
         }
+        
+        http.send(commentData);
     }
-    
-    http.send(commentData);
 }
 
 /**
@@ -144,14 +148,14 @@ function addComment() {
 function deleteAllComments() {
     fetch('/login', {method: 'GET'}).then(response => response.json()).then(loginInfo => {
         const userIsLoggedIn = (loginInfo.loggedIn === 'true');
-        console.log("loginInfo:",loginInfo);
+        console.log('loginInfo:',loginInfo);
         if (userIsLoggedIn) {
-            fetch('/delete-data', {method: "POST"}).then(response => response.text()).then(text => {
+            fetch('/delete-data', {method: 'POST'}).then(response => response.text()).then(text => {
                 // Refresh comment section
                 getCommentsFromServlet();
                 console.log(text);
-                if (text.startsWith("Error")) {
-                    alert(text);
+                if (text.startsWith('Error')) {
+                    createErrorAlert(text);
                 }
             });
         }
@@ -169,8 +173,8 @@ function deleteComment(key) {
                 // Refresh comment section
                 getCommentsFromServlet();
                 console.log(text);
-                if (text.startsWith("Error")) {
-                    alert(text);
+                if (text.startsWith('Error')) {
+                    createErrorAlert(text);
                 }
             });
         }
@@ -214,4 +218,28 @@ function generateCommentForm() {
             loginLink.style.display = 'inline';
         }
     });
+}
+
+function createErrorAlert(errorMessage) {
+    alertBox = document.getElementById('alerts-section');
+    
+    errorAlert = document.createElement('div');
+    errorAlert.className = 'error-alert';
+    errorAlert.setAttribute('role', 'alert');
+    errorAlert.innerText = errorMessage;
+    
+    dismissButton = document.createElement('button');
+    dismissButton.className = 'dismiss-alert';
+    dismissButton.onclick = dismissErrorAlert; 
+    dismissButton.setAttribute('aria-label', 'Dismiss this alert.')
+    dismissButton.innerText = 'X';
+    
+    errorAlert.appendChild(dismissButton);
+    alertBox.appendChild(errorAlert);
+}
+
+function dismissErrorAlert(event) {
+    dismissButton = event.target;
+    errorAlert = dismissButton.parentNode;
+    errorAlert.remove();
 }

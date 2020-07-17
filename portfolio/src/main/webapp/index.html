@@ -21,7 +21,6 @@
       </div>
       <div id="media-links">
         <a href="https://github.com/zrideaux"><img src="/images/GitHub-Mark-Light-120px.png" alt="GitHub"></a>
-        <a href="#"><img src="/images/LI-In-Bug.png" alt="LinkedIn"></a>
       </div>
     </div>
 
@@ -111,17 +110,18 @@
           <button id="input-submit" onclick="addComment();">Submit</button>
           <script>generateCommentForm();</script>
         </div>
+        <div id="alerts-section"></div>
 
         <div id="comment-actions">
           <label>Comments Displayed:</label>
-          <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5" arialabel="The number of comments to display."> 
+          <select name="show" id="number-of-comments" type="number" onchange="getCommentsFromServlet();" placeholder="ex. 5" aria-label="The number of comments to display."> 
             <option value="5" selected="selected">5 Comments</option>
             <option value="10">10 Comments</option>
             <option value="20">20 Comments</option>
             <option value="-1">All Comments</option>
           </select>
           <label>Language:</label>
-          <select name="language" id="language-of-comments" onchange="getCommentsFromServlet();" placeholder="ex. 5" arialabel="The language of comments to display."> 
+          <select name="language" id="language-of-comments" onchange="getCommentsFromServlet();" placeholder="ex. 5" aria-label="The language of comments to display."> 
             <option value="en" selected="selected">English</option>
             <option value="zh">Chinese</option>
             <option value="es">Spanish</option>
