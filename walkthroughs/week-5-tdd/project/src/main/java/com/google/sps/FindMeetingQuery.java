@@ -60,20 +60,20 @@ public final class FindMeetingQuery {
         if (event.getWhen().overlaps(timeRange)) {
           // If an event conflicts with but doesn't completely contain a range in possibleTimes, 
           // add possible replacements.
-          int possibleTimeStart = timeRange.start();
-          int possibleTimeEnd = timeRange.end();
-          int eventStart = event.getWhen().start();
-          int eventEnd = event.getWhen().end();
+          int possibleTimeStartMinutes = timeRange.start();
+          int possibleTimeEndMinutes = timeRange.end();
+          int eventStartMinutes = event.getWhen().start();
+          int eventEndMinutes = event.getWhen().end();
 
-          if (possibleTimeStart < eventStart) {
-            // possibleTime |-----| 
-            // eventStart      |-----|
-            updatedTimes.add(TimeRange.fromStartEnd(possibleTimeStart, eventStart, false));
+          if (possibleTimeStartMinutes < eventStartMinutes) {
+            // possibleTimeMinutes |-----| 
+            // eventStartMinutes      |-----|
+            updatedTimes.add(TimeRange.fromStartEnd(possibleTimeStartMinutes, eventStartMinutes, false));
           }
-          if (eventEnd < possibleTimeEnd) {
-            // possibleTime    |-----|
-            // eventStart   |-----|
-            updatedTimes.add(TimeRange.fromStartEnd(eventEnd, possibleTimeEnd, false));
+          if (eventEndMinutes < possibleTimeEndMinutes) {
+            // possibleTimeMinutes    |-----|
+            // eventStartMinutes   |-----|
+            updatedTimes.add(TimeRange.fromStartEnd(eventEndMinutes, possibleTimeEndMinutes, false));
           }
         } else {
           // Otherwise add the original possibility back 
