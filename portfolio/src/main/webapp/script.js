@@ -135,6 +135,8 @@ function addComment() {
             if (http.readyState == 4 && http.status == 200) {
                 // Refresh comment section
                 getCommentsFromServlet();
+            } else if (http.status >= 400) {
+                createErrorAlert('There was an error adding a comment. Try again. (Status: ' + http.status + ')');
             }
         }
         
